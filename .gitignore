@@ -1,0 +1,32 @@
+# Node.js
+node_modules/
+
+# Build files
+build/
+dist/
+out/
+*.log
+
+# Dependency directories
+pids/
+logs/
+results/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Compiled binary addons (if you have any)
+*.node
+
+# Environment variables
+.env
+
+# Frontend build output
+client/build/
+client/node_modules/
+
+# Backend build output
+server/node_modules/
+server/build/
+server/.dist/
