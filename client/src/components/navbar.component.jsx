@@ -1,6 +1,7 @@
 import { useState } from "react";
 import logo from "../imgs/logo.png";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
+
 
 const Navbar = () => {
   // State to manage the visibility of the search box
@@ -60,6 +61,9 @@ const Navbar = () => {
           </Link>
         </div>
       </nav>
+
+      {/* Outlet for nested routes */}
+      <Outlet />
     </>
   );
 };
