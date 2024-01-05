@@ -3,17 +3,16 @@ Content-Type: application/json
 
 {
   "fullname": "Jond",
-  "email": "khanalnischal2075@somthing.com",
+  "email": "khhaanalnischal2075@sSommmmMmMthing.com",
   "password": "samD45678"
 }
 
-POST http://localhost:3000/signup
+POST http://localhost:3000/signin
 Content-Type: application/json
 
 {
-  "fullname": "Nischal Khanal",
-  "email": "khanalnischal2075@gmail.com",
-  "password": "Hunter420@lag"
+  "email": "khhaanalnischal2075@sSommmmMmMthing.com",
+  "password": "samD45678"
 }
 
 
