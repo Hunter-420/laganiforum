@@ -14,7 +14,13 @@ let PORT = 3000;
 let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
 let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
 server.use(express.json());
-server.use(cors());
+server.use(cors(
+    {
+        origin: 'https://laganiforum.vercel.app/',
+        credentials: true,
+        methods: ['GET', 'POST', 'OPTIONS']
+    }
+));
 server.options('*', cors());
 mongoose.connect(process.env.DB_LOCATION, {
     autoIndex: true
