@@ -99,6 +99,11 @@ server.post("/signup", (req, res) => {
 
 })
 
+server.get('/', (req, res) => {
+    res.send('Hello World')
+  })
+  
+
 server.post("/signin",(req,res)=> {
     let {email, password} = req.body;
     User.findOne({"personal_info.email": email})
