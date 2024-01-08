@@ -10,7 +10,7 @@ const UserAuthForm = ({ type }) => {
 
 
   const userAuthThroughServer = (serverRoute,formData)=>{
-    axios.post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)
+    axios.post('https://laganiforum-backend.vercel.app/' + serverRoute, formData)
 
     .then(({data})=>{
       console.log(data)
