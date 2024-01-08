@@ -16,7 +16,7 @@ let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for pass
 server.use(express.json());
 server.use(cors(
     {
-        origin: 'https://laganiforum.vercel.app',
+        origin: 'https://laganiforum-backend.vercel.app',
         credentials: true,
         methods: ['GET', 'POST', 'OPTIONS']
     }
