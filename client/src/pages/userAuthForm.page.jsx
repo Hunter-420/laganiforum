@@ -5,12 +5,13 @@ import AnymationWrapper from "../common/page-animation";
 import { useRef } from "react";
 import {Toaster, toast} from 'react-hot-toast';
 import axios from "axios";
+import env from "react-dotenv";
 
 const UserAuthForm = ({ type }) => {
 
 
   const userAuthThroughServer = (serverRoute,formData)=>{
-    axios.post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)
+    axios.post(env.VITE_SERVER_DOMAIN + serverRoute, formData)
 
     .then(({data})=>{
       console.log(data)
