@@ -24,7 +24,7 @@ export function SiteJsonLd({ locale }: SiteJsonLdProps) {
       url: origin,
       logo: {
         "@type": "ImageObject",
-        url: `${origin}/logo.png`,
+        url: `${origin}/logo.svg`,
       },
     },
     potentialAction: {
@@ -42,7 +42,7 @@ export function SiteJsonLd({ locale }: SiteJsonLdProps) {
     "@type": "Organization",
     name: "Laganiforum",
     url: origin,
-    logo: `${origin}/logo.png`,
+    logo: `${origin}/logo.svg`,
     sameAs: ["https://www.facebook.com/agbibas"],
   };
 

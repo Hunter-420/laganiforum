@@ -32,12 +32,11 @@ export function Navbar({ locale }: { locale: string }) {
           <div className="flex items-center gap-4 md:gap-6 min-w-0">
             <Link href={`/${locale}`} className="flex items-center gap-2 shrink-0">
               <Image
-                src="/logo.png"
+                src="/logo.svg"
                 alt="Laganiforum"
-                width={120}
+                width={32}
                 height={32}
-                className="h-7 md:h-8 w-auto dark:invert"
-                priority
+                className="h-7 w-7 md:h-8 md:w-8"
               />
               <span className="font-bold text-lg tracking-tight text-primary hidden sm:inline">
                 Laganiforum

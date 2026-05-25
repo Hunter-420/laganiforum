@@ -9,7 +9,7 @@ const mockTickerData = [
 
 export function MarketTicker({ locale = "en" }: { locale?: string }) {
   return (
-    <div className="w-full max-w-[100vw] overflow-hidden border-b border-border bg-emerald-50/80 text-foreground dark:bg-zinc-900 dark:text-zinc-100">
+    <div className="w-full max-w-[100vw] overflow-hidden border-b border-border bg-emerald-100 text-foreground dark:bg-zinc-900 dark:text-zinc-100">
       <div className="flex animate-marquee whitespace-nowrap py-2 sm:py-2.5">
         {[...mockTickerData, ...mockTickerData, ...mockTickerData].map((item, i) => (
           <div
@@ -22,7 +22,7 @@ export function MarketTicker({ locale = "en" }: { locale?: string }) {
             <span className="text-xs sm:text-sm font-medium tabular-nums">{item.price}</span>
             <span
               className={`flex items-center text-[10px] sm:text-xs font-medium tabular-nums ${
-                item.isUp ? "text-emerald-700 dark:text-emerald-300" : "text-red-700 dark:text-red-300"
+                item.isUp ? "text-emerald-800 dark:text-emerald-200" : "text-red-800 dark:text-red-200"
               }`}
             >
               {item.isUp ? (

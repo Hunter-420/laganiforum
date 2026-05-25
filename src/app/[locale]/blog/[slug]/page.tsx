@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import { getAllPublishedSlugs, getPublishedPostBySlug } from "@/lib/posts";
-import { MDXRenderer } from "@/components/mdx-renderer";
+import { ArticleContent } from "@/components/article/article-content";
 import { ShareButtons } from "@/components/blog/share-buttons";
 import { AffiliateBlock } from "@/components/article/affiliate-block";
 import { ViewTracker } from "@/components/article/view-tracker";
@@ -216,8 +216,8 @@ export default async function ArticlePage({
 
       <RiskBanner locale={locale} />
 
-      <section id="article-content" className="max-w-none prose-spacing">
-        <MDXRenderer source={content} />
+      <section id="article-content" className="max-w-none">
+        <ArticleContent source={content} locale={locale} />
       </section>
 
       <AuthorBio author={authorProfile} locale={locale} fromDatabase={authorProfile.id !== "unknown"} />

@@ -3,19 +3,18 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { processContent } from "@/lib/mdx/process-content";
 
-// Custom components map for MDX
 const components = {
-  h1: (props: any) => <h1 className="text-4xl font-extrabold mt-12 mb-6" {...props} />,
-  h2: (props: any) => <h2 className="text-3xl font-bold mt-10 mb-5" {...props} />,
-  h3: (props: any) => <h3 className="text-2xl font-semibold mt-8 mb-4" {...props} />,
-  p: (props: any) => <p className="text-xl leading-8 mb-6 font-normal" {...props} />,
-  ul: (props: any) => <ul className="list-disc pl-6 mb-6 space-y-2" {...props} />,
-  ol: (props: any) => <ol className="list-decimal pl-6 mb-6 space-y-2" {...props} />,
-  li: (props: any) => <li className="text-lg" {...props} />,
-  blockquote: (props: any) => (
-    <blockquote className="border-l-4 border-primary pl-6 py-2 my-8 italic text-muted-foreground bg-muted/20 rounded-r-lg" {...props} />
-  ),
-  a: (props: any) => <a className="text-primary hover:underline font-medium" {...props} />,
+  h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h1 {...props} />,
+  h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h2 {...props} />,
+  h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h3 {...props} />,
+  h4: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h4 {...props} />,
+  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => <p {...props} />,
+  ul: (props: React.HTMLAttributes<HTMLUListElement>) => <ul {...props} />,
+  ol: (props: React.HTMLAttributes<HTMLOListElement>) => <ol {...props} />,
+  li: (props: React.HTMLAttributes<HTMLLIElement>) => <li {...props} />,
+  blockquote: (props: React.HTMLAttributes<HTMLQuoteElement>) => <blockquote {...props} />,
+  a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} />,
+  strong: (props: React.HTMLAttributes<HTMLElement>) => <strong {...props} />,
   img: ({ alt, src }: React.ImgHTMLAttributes<HTMLImageElement>) => {
     if (!src || typeof src !== "string") return null;
     return (

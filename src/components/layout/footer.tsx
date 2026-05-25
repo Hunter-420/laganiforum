@@ -18,14 +18,14 @@ export function Footer({ locale }: FooterProps) {
   const disclaimerLabel = isNp ? "अस्वीकरण" : "Disclaimer";
 
   return (
-    <footer className="mt-auto border-t border-border bg-muted/30">
+    <footer className="mt-auto border-t border-border bg-muted/60">
       <Container className="py-10 md:py-12">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <Link href={`/${locale}`} className="font-bold text-lg text-primary">
+            <Link href={`/${locale}`} className="font-bold text-lg text-emerald-800 dark:text-emerald-300">
               Laganiforum
             </Link>
-            <p className="mt-3 text-lg text-muted-foreground leading-relaxed max-w-md">
+            <p className="mt-3 text-base text-foreground/80 leading-relaxed max-w-md">
               {isNp
                 ? "नेप्से, फरेक्स र व्यक्तिगत वित्त सम्बन्धी शैक्षिक विश्लेषण। यो साइट लगानी सल्लाह होइन—आफैं अनुसन्धान गर्नुहोस्।"
                 : "Educational analysis on NEPSE, forex, and personal finance. This site is not investment advice—always do your own research."}
@@ -36,14 +36,14 @@ export function Footer({ locale }: FooterProps) {
             <h3 className="text-lg font-semibold mb-3">
               {isNp ? "साइट" : "Site"}
             </h3>
-            <ul className="space-y-2 text-lg text-muted-foreground">
+            <ul className="space-y-2 text-base text-foreground/80">
               <li>
-                <Link href={`/${locale}/blog`} className="hover:text-primary transition-colors">
+                <Link href={`/${locale}/blog`} className="font-semibold text-emerald-800 hover:text-emerald-900 dark:text-emerald-300 transition-colors">
                   {analysisLabel}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/market`} className="hover:text-primary transition-colors">
+                <Link href={`/${locale}/market`} className="font-semibold text-emerald-800 hover:text-emerald-900 dark:text-emerald-300 transition-colors">
                   {marketsLabel}
                 </Link>
               </li>
@@ -54,19 +54,19 @@ export function Footer({ locale }: FooterProps) {
             <h3 className="text-lg font-semibold mb-3">
               {isNp ? "कानूनी र विश्वास" : "Legal & trust"}
             </h3>
-            <ul className="space-y-2 text-lg text-muted-foreground">
+            <ul className="space-y-2 text-base text-foreground/80">
               <li>
-                <Link href={`/${locale}/about`} className="hover:text-primary transition-colors">
+                <Link href={`/${locale}/about`} className="font-semibold text-emerald-800 hover:text-emerald-900 dark:text-emerald-300 transition-colors">
                   {aboutLabel}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/contact`} className="hover:text-primary transition-colors">
+                <Link href={`/${locale}/contact`} className="font-semibold text-emerald-800 hover:text-emerald-900 dark:text-emerald-300 transition-colors">
                   {contactLabel}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/disclaimer`} className="hover:text-primary transition-colors">
+                <Link href={`/${locale}/disclaimer`} className="font-semibold text-emerald-800 hover:text-emerald-900 dark:text-emerald-300 transition-colors">
                   {disclaimerLabel}
                 </Link>
               </li>
@@ -96,7 +96,7 @@ export function Footer({ locale }: FooterProps) {
           <ul className="flex flex-wrap gap-x-3 gap-y-1">
             {STOCK_ENTITIES.map((stock) => (
               <li key={stock.slug}>
-                <Link href={`/${locale}/stocks/${stock.slug}`} className="hover:text-primary">
+                <Link href={`/${locale}/stocks/${stock.slug}`} className="font-medium text-emerald-800 hover:text-emerald-900 dark:text-emerald-300">
                   {isNp ? stock.nameNp : stock.nameEn}
                 </Link>
               </li>
@@ -111,7 +111,7 @@ export function Footer({ locale }: FooterProps) {
           <p>
             {isNp ? "सामग्री शैक्षिक उद्देश्यका लागि मात्र।" : "Content is for educational purposes only."}
             {" "}
-            <Link href={`/${locale}/disclaimer`} className="underline hover:text-primary">
+            <Link href={`/${locale}/disclaimer`} className="font-semibold underline text-emerald-800 hover:text-emerald-900 dark:text-emerald-300">
               {disclaimerLabel}
             </Link>
           </p>

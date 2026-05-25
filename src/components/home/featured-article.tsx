@@ -28,6 +28,7 @@ export async function FeaturedArticle({ locale = "en" }: { locale?: string }) {
               fill
               priority
               fetchPriority="high"
+              loading="eager"
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />

@@ -9,7 +9,7 @@ export function buildOrganizationSchema() {
     "@type": "Organization",
     name: "Laganiforum",
     url: origin,
-    logo: `${origin}/logo.png`,
+    logo: `${origin}/logo.svg`,
     sameAs: ["https://www.facebook.com/agbibas"],
   };
 }
@@ -61,7 +61,7 @@ export function buildArticleSchemas(
     url: getSiteOrigin(),
     logo: {
       "@type": "ImageObject" as const,
-      url: `${getSiteOrigin()}/logo.png`,
+      url: `${getSiteOrigin()}/logo.svg`,
     },
   };
 

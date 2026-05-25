@@ -6,6 +6,7 @@ interface OptimizedImageProps {
   alt: string;
   className?: string;
   priority?: boolean;
+  fetchPriority?: "high" | "low" | "auto";
   fill?: boolean;
   width?: number;
   height?: number;
@@ -17,6 +18,7 @@ export function OptimizedImage({
   alt,
   className,
   priority = false,
+  fetchPriority,
   fill = false,
   width = 1200,
   height = 675,
@@ -31,6 +33,7 @@ export function OptimizedImage({
         alt={alt}
         fill
         priority={priority}
+        fetchPriority={fetchPriority}
         sizes={sizes ?? "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
         className={cn("object-cover", className)}
       />
@@ -44,6 +47,7 @@ export function OptimizedImage({
       width={width}
       height={height}
       priority={priority}
+      fetchPriority={fetchPriority}
       sizes={sizes}
       className={className}
     />

@@ -10,6 +10,7 @@ interface PostCardProps {
   locale: string;
   showTags?: boolean;
   titleClassName?: string;
+  imagePriority?: boolean;
 }
 
 export function PostCard({
@@ -17,6 +18,7 @@ export function PostCard({
   locale,
   showTags = false,
   titleClassName = "text-xl",
+  imagePriority = false,
 }: PostCardProps) {
   const isNp = locale === "np";
   const { meta } = post;
@@ -31,6 +33,8 @@ export function PostCard({
               src={meta.image}
               alt={meta.coverImageAlt || meta.title}
               fill
+              priority={imagePriority}
+              fetchPriority={imagePriority ? "high" : undefined}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="transition-transform duration-500 group-hover:scale-105"
             />

@@ -40,14 +40,20 @@
     "sharp": "^0.34.5",
     "tailwind-merge": "^3.6.0"
   },
-  "browserslist": [
-    "last 2 Chrome versions",
-    "last 2 Firefox versions",
-    "last 2 Safari versions",
-    "last 2 Edge versions",
-    "not dead",
-    "not IE 11"
-  ],
+  "browserslist": {
+    "production": [
+      "chrome >= 110",
+      "firefox >= 110",
+      "safari >= 16",
+      "edge >= 110",
+      "not dead"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

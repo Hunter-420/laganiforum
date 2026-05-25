@@ -1,13 +1,23 @@
 import { preload } from "react-dom";
+import dynamic from "next/dynamic";
 import { MarketTicker } from "@/components/home/market-ticker";
 import { FeaturedArticle } from "@/components/home/featured-article";
 import { LatestPosts } from "@/components/home/latest-posts";
 import { NepaliFinanceSection } from "@/components/home/nepali-finance-section";
-import { Newsletter } from "@/components/home/newsletter";
 import { Container } from "@/components/layout/container";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import { getFeaturedPost } from "@/lib/posts";
+import { getSiteOrigin } from "@/lib/site-url";
 import type { Metadata } from "next";
+
+const Newsletter = dynamic(
+  () => import("@/components/home/newsletter").then((m) => ({ default: m.Newsletter })),
+  {
+    loading: () => (
+      <div className="h-64 rounded-2xl bg-muted/30 animate-pulse" aria-hidden />
+    ),
+  }
+);
 
 export const revalidate = 3600;
 
@@ -30,13 +40,17 @@ export async function generateMetadata({
 
   if (!featured?.meta.image) return base;
 
+  const imageUrl = featured.meta.image.startsWith("http")
+    ? featured.meta.image
+    : `${getSiteOrigin()}${featured.meta.image}`;
+
   return {
     ...base,
     openGraph: {
       ...base.openGraph,
       images: [
         {
-          url: featured.meta.image,
+          url: imageUrl,
           alt: featured.meta.coverImageAlt || featured.meta.title,
         },
       ],
@@ -53,10 +67,10 @@ export default async function Home({
   const featured = await getFeaturedPost(locale);
 
   if (featured?.meta.image) {
-    preload(featured.meta.image, {
-      as: "image",
-      fetchPriority: "high",
-    });
+    const href = featured.meta.image.startsWith("http")
+      ? featured.meta.image
+      : `${getSiteOrigin()}${featured.meta.image}`;
+    preload(href, { as: "image", fetchPriority: "high" });
   }
 
   return (
@@ -64,7 +78,7 @@ export default async function Home({
       <MarketTicker locale={locale} />
 
       <Container className="py-8 sm:py-12 space-y-12 sm:space-y-16 md:space-y-20">
-        <section>
+        <section id="hero-featured">
           <FeaturedArticle locale={locale} />
         </section>
 
