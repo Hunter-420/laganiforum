@@ -4,7 +4,7 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 import { getTrustPageCopy } from "@/lib/trust-pages";
 import type { Metadata } from "next";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,

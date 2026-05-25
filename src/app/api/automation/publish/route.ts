@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getDb } from "@/lib/db";
 import { validateAutomationApiKey } from "@/lib/automation-auth";
 import { notifySubscribersNewPost } from "@/lib/newsletter";
@@ -124,6 +125,10 @@ export async function POST(request: NextRequest) {
       language,
       coverImage,
     }).catch((err) => console.error("Newsletter notification failed:", err));
+
+    revalidatePath(`/${language}/blog/${slug}`);
+    revalidatePath(`/${language}/blog`);
+    revalidatePath(`/${language}`);
   }
 
   const publicUrl = `https://laganiforum.com/${language}/blog/${slug}`;

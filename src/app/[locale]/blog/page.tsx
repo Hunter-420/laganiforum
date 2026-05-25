@@ -8,7 +8,7 @@ import { getAllPublishedPosts, postHasTag } from "@/lib/posts";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 const CATEGORIES = ["All", "NEPSE", "Forex", "Technical Analysis", "Fundamental Analysis", "Personal Finance", "Global Market"];
 const NP_CATEGORIES: Record<string, string> = {

@@ -25,7 +25,7 @@ const Newsletter = dynamic(
   { loading: () => <div className="h-64 rounded-2xl bg-muted/30 animate-pulse" aria-hidden /> }
 );
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,

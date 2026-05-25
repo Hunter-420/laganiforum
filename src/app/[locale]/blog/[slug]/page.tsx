@@ -31,7 +31,7 @@ import type { Metadata } from "next";
 import { getFeaturedImageProps, getLcpPreloadHref } from "@/lib/lcp-image";
 import type { AuthorProfile } from "@/lib/types/author";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export async function generateStaticParams() {
   const [enSlugs, npSlugs] = await Promise.all([
@@ -199,19 +199,26 @@ export default async function ArticlePage({
         </div>
 
         {meta.image && (
-          <figure className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8 bg-muted">
-            <Image
-              src={meta.image}
-              alt={meta.coverImageAlt || meta.title}
-              fill
-              priority
-              fetchPriority="high"
-              loading="eager"
-              decoding="async"
-              unoptimized={imageProps?.unoptimized}
-              sizes={imageProps?.sizes ?? "(max-width: 768px) 100vw, 768px"}
-              className="object-cover"
-            />
+          <figure className="w-full mb-8">
+            <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-muted">
+              <Image
+                src={meta.image}
+                alt={meta.coverImageAlt || meta.title}
+                fill
+                priority
+                fetchPriority="high"
+                loading="eager"
+                decoding="async"
+                unoptimized={imageProps?.unoptimized}
+                sizes={imageProps?.sizes ?? "(max-width: 768px) 100vw, 768px"}
+                className="object-cover"
+              />
+            </div>
+            {meta.coverImageAlt && (
+              <figcaption className="mt-3 text-center text-sm text-muted-foreground italic">
+                {meta.coverImageAlt}
+              </figcaption>
+            )}
           </figure>
         )}
 

@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { getDb } from "@/lib/db";
 import { verifySession } from "@/lib/auth";
 import { ObjectId } from "mongodb";
@@ -87,6 +89,9 @@ export async function createPostAction(postInput: PostInput) {
         language: postInput.language,
         coverImage: postInput.coverImage,
       });
+      revalidatePath(`/${postInput.language}/blog/${postInput.slug}`);
+      revalidatePath(`/${postInput.language}/blog`);
+      revalidatePath(`/${postInput.language}`);
     }
 
     return { success: true, id: result.insertedId.toString() };
@@ -142,6 +147,12 @@ export async function updatePostAction(id: string, postInput: PostInput) {
         language: postInput.language,
         coverImage: postInput.coverImage,
       });
+    }
+
+    if (postInput.status === "published" || wasPublished) {
+      revalidatePath(`/${postInput.language}/blog/${postInput.slug}`);
+      revalidatePath(`/${postInput.language}/blog`);
+      revalidatePath(`/${postInput.language}`);
     }
 
     if (previous) {
@@ -282,6 +293,12 @@ export async function deletePostAction(id: string) {
     if (mediaUrls.length > 0) {
       const toDelete = await filterUnreferencedMediaUrls(mediaUrls);
       if (toDelete.length > 0) await deleteMediaUrls(toDelete);
+    }
+
+    if (post.status === "published") {
+      revalidatePath(`/${post.language}/blog/${post.slug}`);
+      revalidatePath(`/${post.language}/blog`);
+      revalidatePath(`/${post.language}`);
     }
 
     return { success: true };

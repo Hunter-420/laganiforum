@@ -1,6 +1,6 @@
 import { collectCategoryUrls, entriesToXml } from "@/lib/seo/sitemap-urls";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export async function GET() {
   const entries = await collectCategoryUrls();

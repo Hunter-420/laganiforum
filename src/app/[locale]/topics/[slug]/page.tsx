@@ -11,7 +11,7 @@ import { getAllPublishedPosts } from "@/lib/posts";
 import { getSiteOrigin, getTopicUrl } from "@/lib/site-url";
 import type { Metadata } from "next";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export function generateStaticParams() {
   const params: { locale: string; slug: string }[] = [];
