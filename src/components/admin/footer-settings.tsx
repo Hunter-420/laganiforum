@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { TOPIC_CLUSTERS } from "@/lib/seo/topics";
 import { STOCK_ENTITIES } from "@/lib/seo/stocks";
@@ -11,25 +12,50 @@ interface FooterSettingsEditorProps {
 }
 
 export function FooterSettingsEditor({ footer, onChange }: FooterSettingsEditorProps) {
+  const [topicInput, setTopicInput] = useState(footer.topicSlugs.join(", "));
+  const [stockInput, setStockInput] = useState(footer.stockSlugs.join(", "));
+
+  useEffect(() => {
+    setTopicInput(footer.topicSlugs.join(", "));
+  }, [footer.topicSlugs]);
+
+  useEffect(() => {
+    setStockInput(footer.stockSlugs.join(", "));
+  }, [footer.stockSlugs]);
+
+  const handleTopicBlur = () => {
+    const slugs = topicInput.split(",").map((s) => s.trim()).filter(Boolean);
+    onChange({ ...footer, topicSlugs: slugs });
+  };
+
+  const handleStockBlur = () => {
+    const slugs = stockInput.split(",").map((s) => s.trim()).filter(Boolean);
+    onChange({ ...footer, stockSlugs: slugs });
+  };
+
   const toggleTopic = (slug: string) => {
-    const has = footer.topicSlugs.includes(slug);
-    onChange({
-      ...footer,
-      topicSlugs: has
-        ? footer.topicSlugs.filter((s) => s !== slug)
-        : [...footer.topicSlugs, slug],
-    });
+    const current = topicInput.split(",").map((s) => s.trim()).filter(Boolean);
+    let newSlugs;
+    if (current.includes(slug)) {
+      newSlugs = current.filter((s) => s !== slug);
+    } else {
+      newSlugs = [...current, slug];
+    }
+    onChange({ ...footer, topicSlugs: newSlugs });
   };
 
   const toggleStock = (slug: string) => {
-    const has = footer.stockSlugs.includes(slug);
-    onChange({
-      ...footer,
-      stockSlugs: has
-        ? footer.stockSlugs.filter((s) => s !== slug)
-        : [...footer.stockSlugs, slug],
-    });
+    const current = stockInput.split(",").map((s) => s.trim()).filter(Boolean);
+    let newSlugs;
+    if (current.includes(slug)) {
+      newSlugs = current.filter((s) => s !== slug);
+    } else {
+      newSlugs = [...current, slug];
+    }
+    onChange({ ...footer, stockSlugs: newSlugs });
   };
+
+  const inputClass = "w-full h-10 px-3 rounded-lg border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/40";
 
   return (
     <Card>
@@ -58,47 +84,59 @@ export function FooterSettingsEditor({ footer, onChange }: FooterSettingsEditorP
         </div>
 
         <div>
-          <p className="text-sm font-medium mb-2">Topics (विषयहरू)</p>
-          <ul className="grid gap-2 sm:grid-cols-2">
-            {TOPIC_CLUSTERS.map((topic) => (
-              <li key={topic.slug}>
-                <label className="flex items-center gap-2 text-sm cursor-pointer rounded-lg border px-3 py-2 hover:bg-muted/50">
-                  <input
-                    type="checkbox"
-                    checked={footer.topicSlugs.includes(topic.slug)}
-                    onChange={() => toggleTopic(topic.slug)}
-                    className="rounded border-input"
-                  />
-                  <span>
-                    {topic.titleEn}
-                    <span className="text-muted-foreground"> / {topic.titleNp}</span>
-                  </span>
-                </label>
-              </li>
-            ))}
-          </ul>
+          <label className="text-sm font-medium mb-2 block">Topics (विषयहरू)</label>
+          <input
+            type="text"
+            value={topicInput}
+            onChange={(e) => setTopicInput(e.target.value)}
+            onBlur={handleTopicBlur}
+            onKeyDown={(e) => e.key === "Enter" && handleTopicBlur()}
+            placeholder="Comma separated topic slugs..."
+            className={inputClass}
+          />
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            {TOPIC_CLUSTERS.map((topic) => {
+              const isActive = footer.topicSlugs.includes(topic.slug);
+              return (
+                <button
+                  key={topic.slug}
+                  type="button"
+                  className={`text-xs px-2 py-0.5 rounded-md border ${isActive ? "bg-primary/10 border-primary/20 text-primary" : "hover:bg-muted"}`}
+                  onClick={() => toggleTopic(topic.slug)}
+                >
+                  {isActive ? "-" : "+"} {topic.titleEn}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div>
-          <p className="text-sm font-medium mb-2">Stocks (शेयर)</p>
-          <ul className="grid gap-2 sm:grid-cols-2">
-            {STOCK_ENTITIES.map((stock) => (
-              <li key={stock.slug}>
-                <label className="flex items-center gap-2 text-sm cursor-pointer rounded-lg border px-3 py-2 hover:bg-muted/50">
-                  <input
-                    type="checkbox"
-                    checked={footer.stockSlugs.includes(stock.slug)}
-                    onChange={() => toggleStock(stock.slug)}
-                    className="rounded border-input"
-                  />
-                  <span>
-                    {stock.nameEn}
-                    <span className="text-muted-foreground"> / {stock.nameNp}</span>
-                  </span>
-                </label>
-              </li>
-            ))}
-          </ul>
+          <label className="text-sm font-medium mb-2 block">Stocks (शेयर)</label>
+          <input
+            type="text"
+            value={stockInput}
+            onChange={(e) => setStockInput(e.target.value)}
+            onBlur={handleStockBlur}
+            onKeyDown={(e) => e.key === "Enter" && handleStockBlur()}
+            placeholder="Comma separated stock slugs..."
+            className={inputClass}
+          />
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            {STOCK_ENTITIES.map((stock) => {
+              const isActive = footer.stockSlugs.includes(stock.slug);
+              return (
+                <button
+                  key={stock.slug}
+                  type="button"
+                  className={`text-xs px-2 py-0.5 rounded-md border ${isActive ? "bg-primary/10 border-primary/20 text-primary" : "hover:bg-muted"}`}
+                  onClick={() => toggleStock(stock.slug)}
+                >
+                  {isActive ? "-" : "+"} {stock.nameEn}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </CardContent>
     </Card>

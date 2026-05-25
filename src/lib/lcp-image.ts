@@ -54,10 +54,9 @@ export function getLcpPreloadHref(
 }
 
 export function getFeaturedImageProps(src: string) {
-  const unoptimized = isLocalAsset(src);
   return {
-    unoptimized,
-    sizes: FEATURED_LCP_SIZES,
+    unoptimized: false,
+    sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 662px",
     width: FEATURED_LCP_WIDTH,
     height: FEATURED_LCP_HEIGHT,
   };
