@@ -110,6 +110,18 @@ export async function POST(request: NextRequest) {
   };
 
   const result = await db.collection("posts").insertOne(post);
+
+  if (status === "published") {
+    const { notifySubscribersNewPost } = await import("@/lib/newsletter");
+    void notifySubscribersNewPost({
+      title: title!,
+      slug: slug!,
+      excerpt: excerpt!,
+      language,
+      coverImage,
+    }).catch((err) => console.error("Newsletter notification failed:", err));
+  }
+
   const publicUrl = `https://laganiforum.com/${language}/blog/${slug}`;
 
   return NextResponse.json({

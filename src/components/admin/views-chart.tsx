@@ -37,8 +37,10 @@ export function ViewsChart({ data, totalInRange }: ViewsChartProps) {
             role="img"
             aria-label="Bar chart of daily page views"
           >
-            {data.map((point) => {
+            {data.map((point, index) => {
               const h = Math.max((point.views / max) * (chartHeight - 24), point.views > 0 ? 4 : 0);
+              const showAxisLabel =
+                index === 0 || index === data.length - 1 || index % 5 === 0;
               return (
                 <div
                   key={point.date}
@@ -53,8 +55,8 @@ export function ViewsChart({ data, totalInRange }: ViewsChartProps) {
                     style={{ height: h }}
                     title={`${point.label}: ${point.views} views`}
                   />
-                  <span className="text-[9px] text-muted-foreground truncate w-full text-center mt-1">
-                    {point.label.split(" ")[0]}
+                  <span className="text-[9px] text-muted-foreground truncate w-full text-center mt-1 tabular-nums">
+                    {showAxisLabel ? point.label : ""}
                   </span>
                 </div>
               );

@@ -1,3 +1,4 @@
+import { preload } from "react-dom";
 import { MarketTicker } from "@/components/home/market-ticker";
 import { FeaturedArticle } from "@/components/home/featured-article";
 import { LatestPosts } from "@/components/home/latest-posts";
@@ -5,6 +6,7 @@ import { NepaliFinanceSection } from "@/components/home/nepali-finance-section";
 import { Newsletter } from "@/components/home/newsletter";
 import { Container } from "@/components/layout/container";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import { getFeaturedPost } from "@/lib/posts";
 import type { Metadata } from "next";
 
 export const revalidate = 3600;
@@ -16,7 +18,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isNp = locale === "np";
-  return buildPageMetadata({
+  const featured = await getFeaturedPost(locale);
+  const base = buildPageMetadata({
     locale,
     title: isNp ? "लगानीफोरम | वित्तीय ज्ञान" : "Laganiforum | Finance & Trading",
     description: isNp
@@ -24,6 +27,21 @@ export async function generateMetadata({
       : "Educational NEPSE, forex, and personal finance analysis in English and Nepali.",
     path: "",
   });
+
+  if (!featured?.meta.image) return base;
+
+  return {
+    ...base,
+    openGraph: {
+      ...base.openGraph,
+      images: [
+        {
+          url: featured.meta.image,
+          alt: featured.meta.coverImageAlt || featured.meta.title,
+        },
+      ],
+    },
+  };
 }
 
 export default async function Home({
@@ -32,25 +50,28 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const featured = await getFeaturedPost(locale);
+
+  if (featured?.meta.image) {
+    preload(featured.meta.image, {
+      as: "image",
+      fetchPriority: "high",
+    });
+  }
 
   return (
     <div className="flex flex-col w-full">
-      {/* Market Ticker spanning full width */}
       <MarketTicker locale={locale} />
-      
+
       <Container className="py-8 sm:py-12 space-y-12 sm:space-y-16 md:space-y-20">
-        {/* Featured Top Section */}
         <section>
           <FeaturedArticle locale={locale} />
         </section>
 
-        {/* Latest Analysis Grid */}
         <LatestPosts locale={locale} />
 
-        {/* Nepal Specific Content */}
         <NepaliFinanceSection locale={locale} />
 
-        {/* Newsletter Capture */}
         <Newsletter locale={locale} />
       </Container>
     </div>

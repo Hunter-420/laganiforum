@@ -44,7 +44,7 @@ export function Navbar({ locale }: { locale: string }) {
               </span>
             </Link>
 
-            <nav className="hidden md:flex items-center gap-5 text-sm font-medium">
+            <nav className="hidden md:flex items-center gap-5 text-lg font-bold">
               <Link
                 href={`/${locale}`}
                 className="text-foreground/80 hover:text-primary transition-colors"

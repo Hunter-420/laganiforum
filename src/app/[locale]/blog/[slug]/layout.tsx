@@ -3,6 +3,7 @@ import { MarketWidgets } from "@/components/finance/market-widgets";
 import { AdPlaceholder } from "@/components/monetization/ad-placeholder";
 import { TableOfContents } from "@/components/article/table-of-contents";
 import { Mail } from "lucide-react";
+import { NewsletterForm } from "@/components/blog/newsletter-form";
 
 export default async function ArticleLayout({
   children,
@@ -43,19 +44,7 @@ export default async function ArticleLayout({
                   ? "साप्ताहिक नेप्से र्‍याप-अप इमेलमा पाउनुहोस्।"
                   : "Weekly NEPSE wrap-up in your inbox."}
               </p>
-              <form className="flex flex-col sm:flex-row lg:flex-col gap-2">
-                <input
-                  type="email"
-                  placeholder={isNp ? "इमेल" : "Email"}
-                  className="flex-1 h-9 rounded-md border bg-background px-3 text-sm"
-                />
-                <button
-                  type="button"
-                  className="h-9 px-4 bg-primary text-primary-foreground font-medium rounded-md text-sm hover:bg-primary/90 transition-colors shrink-0"
-                >
-                  {isNp ? "सदस्यता" : "Subscribe"}
-                </button>
-              </form>
+              <NewsletterForm locale={locale} compact />
             </div>
 
             <div className="hidden lg:block">

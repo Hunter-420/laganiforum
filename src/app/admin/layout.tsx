@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { verifySession } from "@/lib/auth";
-import { ThemeProvider } from "@/components/providers/theme-provider";
 import { DialogProvider } from "@/components/ui/dialog";
 import Link from "next/link";
 import { FileText, Image as ImageIcon, BarChart3, LogOut, Settings } from "lucide-react";
@@ -18,7 +17,6 @@ export default async function AdminLayout({
   }
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <DialogProvider>
         <div className="flex flex-1 w-full min-h-dvh bg-background font-sans antialiased">
           <aside className="w-64 border-r border-border bg-card flex-col md:flex hidden shrink-0">
@@ -70,6 +68,5 @@ export default async function AdminLayout({
           </main>
         </div>
       </DialogProvider>
-    </ThemeProvider>
   );
 }

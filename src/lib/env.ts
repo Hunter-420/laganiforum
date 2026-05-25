@@ -10,6 +10,8 @@ export const env = {
   JWT_SECRET: process.env.JWT_SECRET || "super-secret-key-for-jwt-signing-12345",
   AUTOMATION_API_KEY: process.env.AUTOMATION_API_KEY || "",
   OPENAI_API_KEY: process.env.OPENAI_API_KEY || "",
+  RESEND_API_KEY: process.env.RESEND_API_KEY || "",
+  RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL || "",
 };
 
 export function validateEnv() {

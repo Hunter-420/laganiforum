@@ -22,7 +22,7 @@ export function MarketTicker({ locale = "en" }: { locale?: string }) {
             <span className="text-xs sm:text-sm font-medium tabular-nums">{item.price}</span>
             <span
               className={`flex items-center text-[10px] sm:text-xs font-medium tabular-nums ${
-                item.isUp ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"
+                item.isUp ? "text-emerald-700 dark:text-emerald-300" : "text-red-700 dark:text-red-300"
               }`}
             >
               {item.isUp ? (

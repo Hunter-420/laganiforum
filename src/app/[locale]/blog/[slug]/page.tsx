@@ -25,6 +25,7 @@ import {
   buildBreadcrumbSchema,
 } from "@/lib/seo/structured-data";
 import { TOPIC_CLUSTERS, getTopicBySlug } from "@/lib/seo/topics";
+import { blogCategoryUrl, blogTagUrl } from "@/lib/tag-url";
 import type { Metadata } from "next";
 import type { AuthorProfile } from "@/lib/types/author";
 
@@ -161,9 +162,14 @@ export default async function ArticlePage({
 
       <header className="mb-12">
         <div className="flex flex-wrap items-center gap-3 mb-6">
-          <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20">
-            {meta.category}
-          </Badge>
+          <Link href={blogCategoryUrl(locale, meta.category)}>
+            <Badge
+              variant="secondary"
+              className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+            >
+              {meta.category}
+            </Badge>
+          </Link>
           <time dateTime={meta.date} className="text-sm text-muted-foreground font-medium">
             {isNp ? "प्रकाशित: " : "Published: "}
             {publishedLabel}
@@ -233,9 +239,14 @@ export default async function ArticlePage({
       {meta.tags && meta.tags.length > 0 && (
         <footer className="mt-12 flex flex-wrap gap-2">
           {meta.tags.map((tag) => (
-            <Badge key={tag} variant="outline" className="text-xs">
-              {tag}
-            </Badge>
+            <Link key={tag} href={blogTagUrl(locale, tag)}>
+              <Badge
+                variant="outline"
+                className="text-xs hover:border-primary hover:text-primary transition-colors"
+              >
+                {tag}
+              </Badge>
+            </Link>
           ))}
         </footer>
       )}

@@ -1,7 +1,6 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Mail } from "lucide-react";
+import { NewsletterForm } from "@/components/blog/newsletter-form";
 
 export function Newsletter({ locale = "en" }: { locale?: string }) {
   const isNp = locale === "np";
@@ -25,17 +24,7 @@ export function Newsletter({ locale = "en" }: { locale?: string }) {
             : "Join thousands of traders receiving our weekly breakdown of the NEPSE, global forex trends, and technical setups. No spam, just alpha."}
         </p>
         
-        <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-          <Input 
-            type="email" 
-            placeholder={isNp ? "तपाईंको इमेल ठेगाना प्रविष्ट गर्नुहोस्" : "Enter your email address"}
-            className="bg-background border-border text-foreground placeholder:text-muted-foreground dark:bg-white/5 dark:border-white/10 dark:text-white dark:placeholder:text-zinc-500 h-12 focus-visible:ring-primary/50"
-            required
-          />
-          <Button size="lg" className="h-12 w-full sm:w-auto shrink-0 bg-primary hover:bg-primary/90 text-white font-semibold">
-            {isNp ? "अहिले नै सदस्यता लिनुहोस्" : "Subscribe Now"}
-          </Button>
-        </form>
+        <NewsletterForm locale={locale} />
         <p className="text-xs text-muted-foreground dark:text-zinc-500 mt-4">
           {isNp ? "सदस्यता लिएर, तपाईं हाम्रो सेवाका सर्तहरू र गोपनीयता नीतिमा सहमत हुनुहुन्छ।" : "By subscribing, you agree to our Terms of Service and Privacy Policy."}
         </p>

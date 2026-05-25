@@ -25,7 +25,7 @@ export function MarketWidgets() {
               <span className="font-semibold text-sm">{item.label}</span>
               <div className="flex items-center gap-3">
                 <span className="font-medium text-sm">{item.value}</span>
-                <span className={`flex items-center text-xs font-bold w-16 justify-end ${item.isUp ? 'text-emerald-500' : 'text-red-500'}`}>
+                <span className={`flex items-center text-xs font-bold w-16 justify-end ${item.isUp ? "text-emerald-700 dark:text-emerald-300" : "text-red-700 dark:text-red-300"}`}>
                   {item.isUp ? <ArrowUpRight className="w-3 h-3 mr-0.5" /> : <ArrowDownRight className="w-3 h-3 mr-0.5" />}
                   {item.change}
                 </span>

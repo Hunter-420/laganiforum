@@ -6,6 +6,7 @@ import { ObjectId } from "mongodb";
 import { randomUUID } from "crypto";
 import type { AffiliateBlock } from "@/lib/types/db";
 import { translatePostToEnglish } from "@/lib/translate";
+import { notifySubscribersNewPost, type NewPostNotification } from "@/lib/newsletter";
 
 export interface PostInput {
   title: string;
@@ -40,6 +41,12 @@ function countWords(html: string): number {
   return html.replace(/<[^>]*>/g, "").trim().split(/\s+/).filter(Boolean).length;
 }
 
+function scheduleNewPostEmail(post: NewPostNotification) {
+  void notifySubscribersNewPost(post).catch((err) =>
+    console.error("Newsletter notification failed:", err)
+  );
+}
+
 export async function createPostAction(postInput: PostInput) {
   const session = await verifySession();
   if (!session) {
@@ -68,7 +75,17 @@ export async function createPostAction(postInput: PostInput) {
     };
 
     const result = await db.collection("posts").insertOne(post);
-    
+
+    if (postInput.status === "published") {
+      scheduleNewPostEmail({
+        title: postInput.title,
+        slug: postInput.slug,
+        excerpt: postInput.excerpt,
+        language: postInput.language,
+        coverImage: postInput.coverImage,
+      });
+    }
+
     return { success: true, id: result.insertedId.toString() };
   } catch (error: any) {
     console.error("Failed to create post:", error);
@@ -96,6 +113,9 @@ export async function updatePostAction(id: string, postInput: PostInput) {
 
     await applyFeaturedFlag(db, postInput.language, postInput.isFeatured, new ObjectId(id));
 
+    const previous = await db.collection("posts").findOne({ _id: new ObjectId(id) });
+    const wasPublished = previous?.status === "published";
+
     const { ...fields } = postInput;
     const result = await db.collection("posts").updateOne(
       { _id: new ObjectId(id) },
@@ -109,6 +129,16 @@ export async function updatePostAction(id: string, postInput: PostInput) {
 
     if (result.matchedCount === 0) {
       return { success: false, error: "Post not found" };
+    }
+
+    if (postInput.status === "published" && !wasPublished) {
+      scheduleNewPostEmail({
+        title: postInput.title,
+        slug: postInput.slug,
+        excerpt: postInput.excerpt,
+        language: postInput.language,
+        coverImage: postInput.coverImage,
+      });
     }
 
     return { success: true };

@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Mukta } from "next/font/google";
-import { ThemeProvider } from "@/components/providers/theme-provider";
 import { DialogProvider } from "@/components/ui/dialog";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SiteJsonLd } from "@/components/seo/site-json-ld";
 import { getSiteOrigin } from "@/lib/site-url";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const mukta = Mukta({
   variable: "--font-mukta",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   subsets: ["devanagari", "latin"],
   display: "swap",
 });
@@ -71,19 +73,12 @@ export default async function LocaleLayout({
       lang={isNp ? "ne" : locale}
       className={`${geistSans.variable} ${geistMono.variable} ${mukta.variable} min-h-dvh flex flex-col ${isNp ? "font-[family-name:var(--font-mukta)]" : "font-sans"}`}
     >
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <DialogProvider>
-          <SiteJsonLd locale={locale} />
-          <Navbar locale={locale} />
-          <main className="flex-1">{children}</main>
-          <Footer locale={locale} />
-        </DialogProvider>
-      </ThemeProvider>
+      <SiteJsonLd locale={locale} />
+      <DialogProvider>
+        <Navbar locale={locale} />
+        <main className="flex-1">{children}</main>
+        <Footer locale={locale} />
+      </DialogProvider>
     </div>
   );
 }

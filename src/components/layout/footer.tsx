@@ -25,7 +25,7 @@ export function Footer({ locale }: FooterProps) {
             <Link href={`/${locale}`} className="font-bold text-lg text-primary">
               Laganiforum
             </Link>
-            <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-md">
+            <p className="mt-3 text-lg text-muted-foreground leading-relaxed max-w-md">
               {isNp
                 ? "नेप्से, फरेक्स र व्यक्तिगत वित्त सम्बन्धी शैक्षिक विश्लेषण। यो साइट लगानी सल्लाह होइन—आफैं अनुसन्धान गर्नुहोस्।"
                 : "Educational analysis on NEPSE, forex, and personal finance. This site is not investment advice—always do your own research."}
@@ -33,10 +33,10 @@ export function Footer({ locale }: FooterProps) {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold mb-3">
+            <h3 className="text-lg font-semibold mb-3">
               {isNp ? "साइट" : "Site"}
             </h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <ul className="space-y-2 text-lg text-muted-foreground">
               <li>
                 <Link href={`/${locale}/blog`} className="hover:text-primary transition-colors">
                   {analysisLabel}
@@ -51,10 +51,10 @@ export function Footer({ locale }: FooterProps) {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold mb-3">
+            <h3 className="text-lg font-semibold mb-3">
               {isNp ? "कानूनी र विश्वास" : "Legal & trust"}
             </h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <ul className="space-y-2 text-lg text-muted-foreground">
               <li>
                 <Link href={`/${locale}/about`} className="hover:text-primary transition-colors">
                   {aboutLabel}

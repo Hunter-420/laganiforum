@@ -24,9 +24,10 @@ export async function FeaturedArticle({ locale = "en" }: { locale?: string }) {
           {meta.image ? (
             <Image
               src={meta.image}
-              alt={meta.title}
+              alt={meta.coverImageAlt || meta.title}
               fill
               priority
+              fetchPriority="high"
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />

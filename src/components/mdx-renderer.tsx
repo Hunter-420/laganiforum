@@ -8,7 +8,7 @@ const components = {
   h1: (props: any) => <h1 className="text-4xl font-extrabold mt-12 mb-6" {...props} />,
   h2: (props: any) => <h2 className="text-3xl font-bold mt-10 mb-5" {...props} />,
   h3: (props: any) => <h3 className="text-2xl font-semibold mt-8 mb-4" {...props} />,
-  p: (props: any) => <p className="text-lg leading-8 mb-6" {...props} />,
+  p: (props: any) => <p className="text-xl leading-8 mb-6 font-normal" {...props} />,
   ul: (props: any) => <ul className="list-disc pl-6 mb-6 space-y-2" {...props} />,
   ol: (props: any) => <ol className="list-decimal pl-6 mb-6 space-y-2" {...props} />,
   li: (props: any) => <li className="text-lg" {...props} />,

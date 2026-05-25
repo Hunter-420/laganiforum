@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import { validateAutomationApiKey } from "@/lib/automation-auth";
+import { notifySubscribersNewPost } from "@/lib/newsletter";
 
 const BLOCKED_PHRASES = [
   "guaranteed profit",
@@ -114,6 +115,16 @@ export async function POST(request: NextRequest) {
   };
 
   const result = await db.collection("posts").insertOne(post);
+
+  if (status === "published") {
+    void notifySubscribersNewPost({
+      title,
+      slug,
+      excerpt,
+      language,
+      coverImage,
+    }).catch((err) => console.error("Newsletter notification failed:", err));
+  }
 
   const publicUrl = `https://laganiforum.com/${language}/blog/${slug}`;
 
