@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { redirectToLocaleHome } from "@/lib/navigation";
 import { Container } from "@/components/layout/container";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { HubPostGrid } from "@/components/seo/hub-post-grid";
@@ -51,7 +51,7 @@ export default async function StockPage({
 }) {
   const { locale, slug } = await params;
   const stock = getStockBySlug(slug);
-  if (!stock) notFound();
+  if (!stock) redirectToLocaleHome(locale);
 
   const isNp = locale === "np";
   const name = isNp ? stock.nameNp : stock.nameEn;

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { redirectToLocaleHome } from "@/lib/navigation";
 import { Container } from "@/components/layout/container";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { AuthorSocialLinks } from "@/components/article/author-social-links";
@@ -70,7 +70,7 @@ export default async function AuthorPage({
   const settings = await getSiteSettings();
   const author = getAuthorById(settings.authors, id);
 
-  if (!author) notFound();
+  if (!author) redirectToLocaleHome(locale);
 
   const allPosts = await getAllPublishedPosts(locale);
   const authorPosts = allPosts.filter(

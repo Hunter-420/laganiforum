@@ -1,4 +1,6 @@
 import { getDb } from "./db";
+import { normalizeFooterSettings, DEFAULT_FOOTER_SETTINGS } from "./footer-settings";
+import type { FooterSettings } from "./types/footer";
 import type { AffiliateBlock } from "./types/db";
 import type { AuthorProfile } from "./types/author";
 import { DEFAULT_AUTHORS } from "./types/author";
@@ -11,6 +13,7 @@ export interface SiteSettings {
   adminEmail?: string;
   adminPasswordHash?: string;
   defaultSponsor?: AffiliateBlock;
+  footer: FooterSettings;
   updatedAt: Date;
 }
 
@@ -98,6 +101,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         adminEmail: doc.adminEmail,
         adminPasswordHash: doc.adminPasswordHash,
         defaultSponsor: doc.defaultSponsor,
+        footer: normalizeFooterSettings(doc.footer),
         updatedAt: doc.updatedAt || new Date(),
       };
     }
@@ -110,6 +114,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     categories: DEFAULT_CATEGORIES,
     tags: DEFAULT_TAGS,
     authors: DEFAULT_AUTHORS,
+    footer: DEFAULT_FOOTER_SETTINGS,
     updatedAt: new Date(),
   };
 }

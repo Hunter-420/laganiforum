@@ -7,6 +7,8 @@ import { randomUUID } from "crypto";
 import type { AffiliateBlock } from "@/lib/types/db";
 import { translatePostToEnglish } from "@/lib/translate";
 import { notifySubscribersNewPost, type NewPostNotification } from "@/lib/newsletter";
+import { collectPostMediaUrls, diffRemovedMediaUrls } from "@/lib/post-media";
+import { deleteMediaUrls, filterUnreferencedMediaUrls } from "@/lib/media-storage";
 
 export interface PostInput {
   title: string;
@@ -142,6 +144,25 @@ export async function updatePostAction(id: string, postInput: PostInput) {
       });
     }
 
+    if (previous) {
+      const removed = diffRemovedMediaUrls(
+        {
+          coverImage: previous.coverImage,
+          content: previous.content,
+          affiliate: previous.affiliate,
+        },
+        {
+          coverImage: postInput.coverImage,
+          content: postInput.content,
+          affiliate: postInput.affiliate,
+        }
+      );
+      if (removed.length > 0) {
+        const toDelete = await filterUnreferencedMediaUrls(removed, new ObjectId(id));
+        if (toDelete.length > 0) await deleteMediaUrls(toDelete);
+      }
+    }
+
     return { success: true };
   } catch (error: any) {
     console.error("Failed to update post:", error);
@@ -240,10 +261,27 @@ export async function deletePostAction(id: string) {
 
   try {
     const db = await getDb();
+    const post = await db.collection("posts").findOne({ _id: new ObjectId(id) });
+
+    if (!post) {
+      return { success: false, error: "Post not found" };
+    }
+
+    const mediaUrls = collectPostMediaUrls({
+      coverImage: post.coverImage,
+      content: post.content,
+      affiliate: post.affiliate,
+    });
+
     const result = await db.collection("posts").deleteOne({ _id: new ObjectId(id) });
-    
+
     if (result.deletedCount === 0) {
       return { success: false, error: "Post not found" };
+    }
+
+    if (mediaUrls.length > 0) {
+      const toDelete = await filterUnreferencedMediaUrls(mediaUrls);
+      if (toDelete.length > 0) await deleteMediaUrls(toDelete);
     }
 
     return { success: true };

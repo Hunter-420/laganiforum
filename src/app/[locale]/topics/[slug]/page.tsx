@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { redirectToLocaleHome } from "@/lib/navigation";
 import { Container } from "@/components/layout/container";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { HubPostGrid } from "@/components/seo/hub-post-grid";
@@ -48,7 +48,7 @@ export default async function TopicPage({
 }) {
   const { locale, slug } = await params;
   const topic = getTopicBySlug(slug);
-  if (!topic) notFound();
+  if (!topic) redirectToLocaleHome(locale);
 
   const isNp = locale === "np";
   const title = isNp ? topic.titleNp : topic.titleEn;
