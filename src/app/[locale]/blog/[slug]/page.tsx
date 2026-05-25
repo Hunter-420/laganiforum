@@ -26,7 +26,9 @@ import {
 } from "@/lib/seo/structured-data";
 import { TOPIC_CLUSTERS, getTopicBySlug } from "@/lib/seo/topics";
 import { blogCategoryUrl, blogTagUrl } from "@/lib/tag-url";
+import { preload } from "react-dom";
 import type { Metadata } from "next";
+import { getFeaturedImageProps, getLcpPreloadHref } from "@/lib/lcp-image";
 import type { AuthorProfile } from "@/lib/types/author";
 
 export const revalidate = 3600;
@@ -134,6 +136,13 @@ export default async function ArticlePage({
       t.categories?.some((c) => c.toLowerCase() === meta.category.toLowerCase())
     ) || (meta.tags?.[0] ? getTopicBySlug(meta.tags[0].toLowerCase().replace(/\s+/g, "-")) : undefined);
 
+  const imageProps = meta.image ? getFeaturedImageProps(meta.image) : null;
+  const lcpHref = meta.image ? getLcpPreloadHref(meta.image) : null;
+
+  if (lcpHref) {
+    preload(lcpHref, { as: "image", fetchPriority: "high" });
+  }
+
   return (
     <>
       {articleSchemas.map((schema) => (
@@ -199,7 +208,8 @@ export default async function ArticlePage({
               fetchPriority="high"
               loading="eager"
               decoding="async"
-              sizes="(max-width: 768px) 100vw, 768px"
+              unoptimized={imageProps?.unoptimized}
+              sizes={imageProps?.sizes ?? "(max-width: 768px) 100vw, 768px"}
               className="object-cover"
             />
           </figure>

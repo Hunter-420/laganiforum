@@ -111,7 +111,7 @@ export function Navbar({ locale }: { locale: string }) {
             </nav>
           </div>
 
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 min-h-11 shrink-0">
             <SearchDialog locale={locale} open={searchOpen} onOpenChange={setSearchOpen} />
             <ThemeToggle />
             <LocaleSwitcher locale={locale} />

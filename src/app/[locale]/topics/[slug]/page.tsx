@@ -14,9 +14,13 @@ import type { Metadata } from "next";
 export const revalidate = 3600;
 
 export function generateStaticParams() {
-  return ["en", "np"].flatMap((locale) =>
-    TOPIC_CLUSTERS.map((topic) => ({ locale, slug: topic.slug }))
-  );
+  const params: { locale: string; slug: string }[] = [];
+  for (const locale of ["en", "np"]) {
+    for (const topic of TOPIC_CLUSTERS) {
+      params.push({ locale, slug: topic.slug });
+    }
+  }
+  return params;
 }
 
 export async function generateMetadata({
