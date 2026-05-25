@@ -6,6 +6,8 @@ import { getSiteSettings, saveSiteSettings } from "@/lib/site-settings";
 import { hashPassword } from "@/lib/password";
 import type { AffiliateBlock } from "@/lib/types/db";
 import type { AuthorProfile } from "@/lib/types/author";
+import type { FooterSettings } from "@/lib/types/footer";
+import { normalizeFooterSettings } from "@/lib/footer-settings";
 
 function serializeAuthors(authors: AuthorProfile[]): AuthorProfile[] {
   return authors.map((a) => ({
@@ -15,6 +17,9 @@ function serializeAuthors(authors: AuthorProfile[]): AuthorProfile[] {
     bio: a.bio ? String(a.bio) : "",
     photoUrl: a.photoUrl ? String(a.photoUrl) : "",
     facebookUrl: a.facebookUrl ? String(a.facebookUrl) : "",
+    linkedinUrl: a.linkedinUrl ? String(a.linkedinUrl) : "",
+    twitterUrl: a.twitterUrl ? String(a.twitterUrl) : "",
+    email: a.email ? String(a.email) : "",
     isDefault: !!a.isDefault,
   }));
 }
@@ -33,6 +38,7 @@ export async function getSettingsAction() {
       authors: settings.authors,
       adminEmail: settings.adminEmail,
       hasCustomPassword: !!settings.adminPasswordHash,
+      footer: settings.footer,
     },
   };
 }
@@ -42,6 +48,7 @@ export async function updateSettingsAction(data: {
   tags: string[];
   authors?: AuthorProfile[];
   defaultSponsor?: AffiliateBlock | null;
+  footer?: FooterSettings;
 }) {
   const session = await verifySession();
   if (!session) return { success: false, error: "Unauthorized" };
@@ -51,6 +58,7 @@ export async function updateSettingsAction(data: {
     tags: data.tags.filter(Boolean),
     authors: data.authors ? serializeAuthors(data.authors.filter((a) => a.name.trim())) : undefined,
     defaultSponsor: data.defaultSponsor || undefined,
+    footer: data.footer ? normalizeFooterSettings(data.footer) : undefined,
   });
 
   revalidatePath("/en", "layout");

@@ -1,50 +1,29 @@
-"use client";
-
-import { Info } from "lucide-react";
+import Link from "next/link";
+import { getArticleDisclaimerText } from "@/lib/disclaimer";
 
 interface DisclaimerProps {
   locale: string;
+  customText?: string;
 }
 
-export function Disclaimer({ locale }: DisclaimerProps) {
+export function Disclaimer({ locale, customText }: DisclaimerProps) {
   const isNp = locale === "np";
+  const body = getArticleDisclaimerText(locale, customText);
 
   return (
-    <details className="mt-12 pt-8 border-t border-border group">
-      <summary className="flex items-center gap-2 cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors list-none [&::-webkit-details-marker]:hidden">
-        <Info className="w-4 h-4 shrink-0" aria-hidden />
-        <span className="font-medium">
-          {isNp ? "शैक्षिक सामग्री अस्वीकरण" : "Educational content notice"}
-        </span>
-        <span className="text-xs opacity-70 group-open:hidden">
-          {isNp ? "(विस्तार गर्नुहोस्)" : "(tap to read)"}
-        </span>
-      </summary>
-      <div className="mt-3 pl-6 text-sm text-muted-foreground leading-relaxed space-y-2 max-w-2xl">
-        {isNp ? (
-          <>
-            <p>
-              यो लेख शैक्षिक उद्देश्यका लागि मात्र हो। व्यक्तिगत वित्तीय, लगानी, वा व्यापारिक
-              सल्लाह होइन।
-            </p>
-            <p>
-              बजारमा जोखिम हुन्छ। निर्णय अघि आफैं अनुसन्धान गर्नुहोस् वा दर्ता भएका सल्लाहकारसँग
-              परामर्श लिनुहोस्।
-            </p>
-          </>
-        ) : (
-          <>
-            <p>
-              This article is for education only — not personal financial, investment, or trading
-              advice.
-            </p>
-            <p>
-              Markets carry risk. Do your own research or speak with a licensed adviser before
-              making decisions.
-            </p>
-          </>
-        )}
-      </div>
-    </details>
+    <aside className="mt-12 pt-8 border-t border-border" aria-label={isNp ? "अस्वीकरण" : "Disclaimer"}>
+      <p className="text-base lg:text-lg font-normal leading-[1.8] text-muted-foreground max-w-3xl">
+        {body}
+      </p>
+      <p className="mt-4 text-base lg:text-lg leading-[1.8]">
+        <Link
+          href={`/${locale}/disclaimer`}
+          className="font-semibold text-emerald-800 hover:underline dark:text-emerald-300"
+        >
+          {isNp ? "पूर्ण अस्वीकरण पढ्नुहोस्" : "Read full disclaimer"}
+        </Link>
+        .
+      </p>
+    </aside>
   );
 }

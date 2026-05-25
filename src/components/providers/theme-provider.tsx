@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { THEME_STORAGE_KEY } from "@/lib/theme-script";
@@ -32,27 +33,32 @@ function readStoredTheme(): Theme {
   return stored === "light" || stored === "dark" || stored === "system" ? stored : "system";
 }
 
+function readResolvedFromDom(): "light" | "dark" {
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
+}
+
 function applyTheme(resolved: "light" | "dark") {
-  requestAnimationFrame(() => {
-    const root = document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(resolved);
-    root.style.colorScheme = resolved;
-  });
+  const root = document.documentElement;
+  root.classList.remove("light", "dark");
+  root.classList.add(resolved);
+  root.style.colorScheme = resolved;
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("system");
-  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
+  const [theme, setThemeState] = useState<Theme>(() =>
+    typeof window === "undefined" ? "system" : readStoredTheme()
+  );
+  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">(() =>
+    typeof window === "undefined" ? "light" : readResolvedFromDom()
+  );
+  const skipNextApply = useRef(true);
 
   useEffect(() => {
-    const initial = readStoredTheme();
-    const resolved = resolveTheme(initial);
-    setThemeState(initial);
-    setResolvedTheme(resolved);
-  }, []);
+    if (skipNextApply.current) {
+      skipNextApply.current = false;
+      return;
+    }
 
-  useEffect(() => {
     const resolved = resolveTheme(theme);
     setResolvedTheme(resolved);
     applyTheme(resolved);
@@ -72,6 +78,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);
+    const resolved = resolveTheme(next);
+    setResolvedTheme(resolved);
+    applyTheme(resolved);
+    localStorage.setItem(THEME_STORAGE_KEY, next);
   }, []);
 
   const value = useMemo(

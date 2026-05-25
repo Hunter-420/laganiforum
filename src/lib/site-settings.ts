@@ -1,4 +1,6 @@
 import { getDb } from "./db";
+import { normalizeFooterSettings, DEFAULT_FOOTER_SETTINGS } from "./footer-settings";
+import type { FooterSettings } from "./types/footer";
 import type { AffiliateBlock } from "./types/db";
 import type { AuthorProfile } from "./types/author";
 import { DEFAULT_AUTHORS } from "./types/author";
@@ -11,6 +13,7 @@ export interface SiteSettings {
   adminEmail?: string;
   adminPasswordHash?: string;
   defaultSponsor?: AffiliateBlock;
+  footer: FooterSettings;
   updatedAt: Date;
 }
 
@@ -27,6 +30,9 @@ function normalizeAuthor(raw: Partial<AuthorProfile>): AuthorProfile | null {
     bio: raw.bio ? String(raw.bio).trim() : undefined,
     photoUrl: raw.photoUrl ? String(raw.photoUrl).trim() : undefined,
     facebookUrl: raw.facebookUrl ? String(raw.facebookUrl).trim() : undefined,
+    linkedinUrl: raw.linkedinUrl ? String(raw.linkedinUrl).trim() : undefined,
+    twitterUrl: raw.twitterUrl ? String(raw.twitterUrl).trim() : undefined,
+    email: raw.email ? String(raw.email).trim() : undefined,
     isDefault: !!raw.isDefault,
   };
 }
@@ -95,6 +101,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         adminEmail: doc.adminEmail,
         adminPasswordHash: doc.adminPasswordHash,
         defaultSponsor: doc.defaultSponsor,
+        footer: normalizeFooterSettings(doc.footer),
         updatedAt: doc.updatedAt || new Date(),
       };
     }
@@ -107,6 +114,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     categories: DEFAULT_CATEGORIES,
     tags: DEFAULT_TAGS,
     authors: DEFAULT_AUTHORS,
+    footer: DEFAULT_FOOTER_SETTINGS,
     updatedAt: new Date(),
   };
 }

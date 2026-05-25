@@ -10,6 +10,9 @@ import { updateSettingsAction, updateAdminCredentialsAction } from "./actions";
 import type { AffiliateBlock } from "@/lib/types/db";
 import type { AuthorProfile } from "@/lib/types/author";
 import { AuthorsSettings } from "@/components/admin/authors-settings";
+import { FooterSettingsEditor } from "@/components/admin/footer-settings";
+import type { FooterSettings } from "@/lib/types/footer";
+import { DEFAULT_FOOTER_SETTINGS } from "@/lib/footer-settings";
 
 interface SettingsClientProps {
   initial: {
@@ -19,6 +22,7 @@ interface SettingsClientProps {
     defaultSponsor?: AffiliateBlock;
     adminEmail?: string;
     hasCustomPassword: boolean;
+    footer: FooterSettings;
   };
 }
 
@@ -27,6 +31,7 @@ export function SettingsClient({ initial }: SettingsClientProps) {
   const [categories, setCategories] = useState(initial.categories);
   const [tags, setTags] = useState(initial.tags);
   const [authors, setAuthors] = useState(initial.authors);
+  const [footer, setFooter] = useState(initial.footer ?? DEFAULT_FOOTER_SETTINGS);
   const [newCategory, setNewCategory] = useState("");
   const [newTag, setNewTag] = useState("");
   const [saving, setSaving] = useState(false);
@@ -56,6 +61,7 @@ export function SettingsClient({ initial }: SettingsClientProps) {
         sponsor.title && sponsor.url
           ? sponsor
           : null,
+      footer,
     });
     setSaving(false);
     if (result.success) toast("Settings saved", "success");
@@ -118,6 +124,8 @@ export function SettingsClient({ initial }: SettingsClientProps) {
           </Button>
         </CardContent>
       </Card>
+
+      <FooterSettingsEditor footer={footer} onChange={setFooter} />
 
       <AuthorsSettings authors={authors} onChange={setAuthors} />
 

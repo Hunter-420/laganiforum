@@ -25,6 +25,7 @@ export default async function SettingsPage() {
           authors: settings.authors,
           adminEmail: settings.adminEmail,
           hasCustomPassword: !!settings.adminPasswordHash,
+          footer: settings.footer,
         }}
       />
     </div>

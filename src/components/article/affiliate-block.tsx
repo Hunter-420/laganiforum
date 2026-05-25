@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ArrowUpRight, Megaphone, Sparkles } from "lucide-react";
 import type { AffiliateBlock as AffiliateBlockType } from "@/lib/types/db";
 
@@ -36,12 +37,14 @@ export function AffiliateBlock({ affiliate, locale = "en" }: AffiliateBlockProps
         <div className="p-5 sm:p-6">
           <div className="flex flex-col sm:flex-row gap-5 items-start">
             {affiliate.image && (
-              <div className="shrink-0 w-full sm:w-40 aspect-[4/3] rounded-xl overflow-hidden bg-muted border shadow-inner ring-1 ring-black/5">
-                <img
+              <div className="relative shrink-0 w-full sm:w-40 aspect-[4/3] rounded-xl overflow-hidden bg-muted border shadow-inner ring-1 ring-black/5">
+                <Image
                   src={affiliate.image}
                   alt={affiliate.description ? `${affiliate.title} — sponsor` : affiliate.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 160px"
                   loading="lazy"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
             )}

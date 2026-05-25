@@ -113,7 +113,7 @@ export async function collectAuthorUrls(): Promise<SitemapEntry[]> {
   const urls: SitemapEntry[] = [];
 
   for (const author of settings.authors) {
-    if (!author.id || !author.name.trim()) continue;
+    if (!author.id?.trim() || !author.name.trim()) continue;
     for (const locale of LOCALES) {
       urls.push(
         entry(`/${locale}/author/${author.id}`, {

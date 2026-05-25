@@ -117,6 +117,7 @@ export function PostForm({
   );
   const [translating, setTranslating] = useState(false);
   const [isFeatured, setIsFeatured] = useState(!!initialData?.isFeatured);
+  const [disclaimer, setDisclaimer] = useState(initialData?.disclaimer || "");
 
   const wordCount = useMemo(() => {
     const text = content.replace(/<[^>]*>?/gm, "");
@@ -195,6 +196,7 @@ export function PostForm({
                 url: affiliateUrl,
               }
             : undefined,
+        disclaimer: disclaimer.trim() || undefined,
       };
 
       const result = await onSave(status, postInput);
@@ -466,6 +468,16 @@ export function PostForm({
               />
               <span className="text-sm font-medium">Featured on homepage</span>
             </label>
+
+            <div>
+              <label className={labelClass}>Custom disclaimer (optional)</label>
+              <textarea
+                className="w-full min-h-[72px] rounded-lg border bg-background px-3 py-2 text-sm leading-relaxed"
+                value={disclaimer}
+                onChange={(e) => setDisclaimer(e.target.value)}
+                placeholder="Leave empty to use the site default. “Read full disclaimer” is always shown at the end."
+              />
+            </div>
 
             <div>
               <label className={labelClass}>Tags</label>

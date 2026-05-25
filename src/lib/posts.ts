@@ -79,6 +79,7 @@ export async function getPublishedPostBySlug(
           coverImageAlt: doc.coverImageAlt,
           readingTime: computeReadingTime(doc.content),
           affiliate: doc.affiliate,
+          disclaimer: doc.disclaimer,
           views: doc.views || 0,
           isFeatured: !!doc.isFeatured,
           createdAt: doc.createdAt
@@ -134,6 +135,7 @@ export async function getAllPublishedPosts(locale: string): Promise<Post[]> {
           coverImageAlt: doc.coverImageAlt,
           readingTime: computeReadingTime(doc.content),
           affiliate: doc.affiliate,
+          disclaimer: doc.disclaimer,
           views: doc.views || 0,
           isFeatured: !!doc.isFeatured,
           createdAt: doc.createdAt

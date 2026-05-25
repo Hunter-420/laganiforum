@@ -20,10 +20,11 @@ const geistMono = Geist_Mono({
 
 const mukta = Mukta({
   variable: "--font-mukta",
-  weight: ["400", "700"],
+  weight: ["400", "500", "600", "700"],
   subsets: ["devanagari", "latin"],
   display: "swap",
   preload: true,
+  adjustFontFallback: false,
 });
 
 export async function generateMetadata({
@@ -72,7 +73,7 @@ export default async function LocaleLayout({
   return (
     <div
       lang={isNp ? "ne" : locale}
-      className={`${geistSans.variable} ${geistMono.variable} ${mukta.variable} min-h-dvh flex flex-col ${isNp ? "font-[family-name:var(--font-mukta)]" : "font-sans"}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${mukta.variable} min-h-dvh flex flex-col ${isNp ? "np-locale font-mukta" : "font-sans"}`}
     >
       <SiteJsonLd locale={locale} />
       <DialogProvider>

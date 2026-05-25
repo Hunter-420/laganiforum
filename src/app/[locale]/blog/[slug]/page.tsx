@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { redirectToLocaleHome } from "@/lib/navigation";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import { getAllPublishedSlugs, getPublishedPostBySlug } from "@/lib/posts";
@@ -100,7 +100,7 @@ export default async function ArticlePage({
   const { locale, slug } = await params;
   const post = await getPublishedPostBySlug(slug, locale);
 
-  if (!post) notFound();
+  if (!post) redirectToLocaleHome(locale);
 
   const { meta, content } = post;
   const isNp = locale === "np";
@@ -247,7 +247,7 @@ export default async function ArticlePage({
 
       {meta.affiliate && <AffiliateBlock affiliate={meta.affiliate} locale={locale} />}
 
-      <Disclaimer locale={locale} />
+      <Disclaimer locale={locale} customText={meta.disclaimer} />
 
       {meta.tags && meta.tags.length > 0 && (
         <footer className="mt-12 flex flex-wrap gap-2">

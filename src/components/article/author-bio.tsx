@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { OptimizedImage } from "@/components/ui/optimized-image";
+import { getFirstParagraph } from "@/lib/author-text";
 import type { AuthorProfile } from "@/lib/types/author";
 
 interface AuthorBioProps {
@@ -16,68 +17,73 @@ const FALLBACK_BIO_NP =
 export function AuthorBio({ author, locale, fromDatabase = false }: AuthorBioProps) {
   const isNp = locale === "np";
   const title = author.title || (isNp ? "बजार विश्लेषक" : "Market Analyst");
-  const bio =
+  const fullBio =
     author.bio ||
     (fromDatabase ? undefined : isNp ? FALLBACK_BIO_NP : FALLBACK_BIO_EN);
+  const bio = fullBio ? getFirstParagraph(fullBio) : undefined;
   const authorPageHref =
     author.id && author.id !== "unknown" ? `/${locale}/author/${author.id}` : null;
+
+  const avatar = author.photoUrl ? (
+    <div className="relative h-20 w-20 shrink-0 rounded-full overflow-hidden border border-border ring-2 ring-transparent transition-shadow group-hover:ring-emerald-200 dark:group-hover:ring-emerald-800">
+      <OptimizedImage
+        src={author.photoUrl}
+        alt={author.name}
+        fill
+        sizes="80px"
+        className="object-cover"
+      />
+    </div>
+  ) : (
+    <div className="h-20 w-20 shrink-0 rounded-full bg-muted flex items-center justify-center text-2xl font-bold text-emerald-800 dark:text-emerald-300 border border-border">
+      {author.name.charAt(0)}
+    </div>
+  );
 
   return (
     <aside
       className="mt-12 rounded-2xl border border-border bg-muted/30 p-6 md:p-8"
       aria-labelledby="author-bio-heading"
     >
-      <h2 id="author-bio-heading" className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-4">
+      <h2
+        id="author-bio-heading"
+        className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-4"
+      >
         {isNp ? "लेखकको बारेमा" : "About the author"}
       </h2>
       <div className="flex flex-col sm:flex-row gap-5">
-        {author.photoUrl ? (
-          <div className="relative h-20 w-20 shrink-0 rounded-full overflow-hidden border border-border">
-            <OptimizedImage
-              src={author.photoUrl}
-              alt={author.name}
-              fill
-              sizes="80px"
-              className="object-cover"
-            />
-          </div>
+        {authorPageHref ? (
+          <Link href={authorPageHref} className="shrink-0 group" aria-label={`${author.name} — ${isNp ? "लेखक पृष्ठ" : "author profile"}`}>
+            {avatar}
+          </Link>
         ) : (
-          <div className="h-20 w-20 shrink-0 rounded-full bg-muted flex items-center justify-center text-2xl font-bold text-primary border border-border">
-            {author.name.charAt(0)}
-          </div>
+          avatar
         )}
         <div className="min-w-0 flex-1">
           <p className="text-lg font-bold">
             {authorPageHref ? (
-              <Link href={authorPageHref} className="hover:text-primary transition-colors">
+              <Link
+                href={authorPageHref}
+                className="hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
+              >
                 {author.name}
               </Link>
             ) : (
               author.name
             )}
           </p>
-          <p className="text-sm text-primary font-medium mb-3">{title}</p>
-          {bio && (
-            <p className="text-sm text-muted-foreground leading-relaxed">{bio}</p>
-          )}
-          {authorPageHref && (
-            <Link
-              href={authorPageHref}
-              className="inline-block mt-2 text-sm text-primary hover:underline"
-            >
-              {isNp ? "लेखक पृष्ठ" : "Author profile"}
-            </Link>
-          )}
-          {author.facebookUrl && (
-            <Link
-              href={author.facebookUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-3 text-sm text-primary hover:underline"
-            >
-              {isNp ? "फेसबुक प्रोफाइल" : "Facebook profile"}
-            </Link>
-          )}
+          <p className="text-sm text-emerald-800 dark:text-emerald-300 font-medium mb-3">{title}</p>
+          {bio &&
+            (authorPageHref ? (
+              <Link
+                href={authorPageHref}
+                className="block text-base lg:text-lg font-normal leading-[1.8] text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {bio}
+              </Link>
+            ) : (
+              <p className="text-base lg:text-lg font-normal leading-[1.8] text-muted-foreground">{bio}</p>
+            ))}
         </div>
       </div>
     </aside>
