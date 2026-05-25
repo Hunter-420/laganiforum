@@ -72,9 +72,7 @@ export function TableOfContents({ isNp }: { isNp: boolean }) {
     e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
-      // Offset for sticky navbar
-      const y = element.getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top: y, behavior: "smooth" });
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
       setActiveId(id);
     }
   };

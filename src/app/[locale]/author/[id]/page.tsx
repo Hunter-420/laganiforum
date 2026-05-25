@@ -25,7 +25,13 @@ export async function generateStaticParams() {
   }
 
   const ids = authors.map((a) => a.id).filter(Boolean);
-  return ["en", "np"].flatMap((locale) => ids.map((id) => ({ locale, id })));
+  const params: { locale: string; id: string }[] = [];
+  for (const locale of ["en", "np"]) {
+    for (const id of ids) {
+      params.push({ locale, id });
+    }
+  }
+  return params;
 }
 
 export async function generateMetadata({

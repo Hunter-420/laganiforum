@@ -46,7 +46,7 @@ export function LocaleSwitcher({ locale }: { locale: string }) {
     <Button
       variant="outline"
       size="sm"
-      className="font-semibold h-8 font-noto-sans-devanagari min-w-[72px]"
+      className="font-semibold h-11 min-h-11 font-noto-sans-devanagari min-w-[5.5rem] shrink-0"
       onClick={handleSwitch}
       disabled={loading}
     >

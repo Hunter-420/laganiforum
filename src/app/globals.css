@@ -362,3 +362,10 @@
   height: 0;
   pointer-events: none;
 }
+
+#article-content h2,
+#article-content h3,
+.article-prose h2,
+.article-prose h3 {
+  scroll-margin-top: 5rem;
+}

@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { THEME_STORAGE_KEY } from "@/lib/theme-script";
 
 type Theme = "light" | "dark" | "system";
 
@@ -16,8 +17,6 @@ type ThemeContextValue = {
   resolvedTheme: "light" | "dark";
   setTheme: (theme: Theme) => void;
 };
-
-const STORAGE_KEY = "laganiforum-theme";
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
@@ -28,11 +27,18 @@ function resolveTheme(theme: Theme): "light" | "dark" {
   return theme;
 }
 
+function readStoredTheme(): Theme {
+  const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
+  return stored === "light" || stored === "dark" || stored === "system" ? stored : "system";
+}
+
 function applyTheme(resolved: "light" | "dark") {
-  const root = document.documentElement;
-  root.classList.remove("light", "dark");
-  root.classList.add(resolved);
-  root.style.colorScheme = resolved;
+  requestAnimationFrame(() => {
+    const root = document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(resolved);
+    root.style.colorScheme = resolved;
+  });
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
@@ -40,19 +46,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-    const initial = stored === "light" || stored === "dark" || stored === "system" ? stored : "system";
-    setThemeState(initial);
+    const initial = readStoredTheme();
     const resolved = resolveTheme(initial);
+    setThemeState(initial);
     setResolvedTheme(resolved);
-    applyTheme(resolved);
   }, []);
 
   useEffect(() => {
     const resolved = resolveTheme(theme);
     setResolvedTheme(resolved);
     applyTheme(resolved);
-    localStorage.setItem(STORAGE_KEY, theme);
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
 
     if (theme !== "system") return;
 

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { getFeaturedImageProps } from "@/lib/lcp-image";
 import { getFeaturedPost } from "@/lib/posts";
 import type { Post } from "@/lib/posts";
 
@@ -22,6 +23,7 @@ export async function FeaturedArticle({ locale = "en", featured }: FeaturedArtic
   }
 
   const { meta } = featuredPost;
+  const imageProps = meta.image ? getFeaturedImageProps(meta.image) : null;
 
   return (
     <div className="group relative overflow-hidden rounded-2xl bg-card border shadow-sm">
@@ -36,7 +38,8 @@ export async function FeaturedArticle({ locale = "en", featured }: FeaturedArtic
               fetchPriority="high"
               loading="eager"
               decoding="async"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              unoptimized={imageProps?.unoptimized}
+              sizes={imageProps?.sizes}
               className="object-cover"
             />
           ) : (

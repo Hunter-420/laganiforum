@@ -42,13 +42,11 @@
   },
   "browserslist": {
     "production": [
-      "chrome >= 110",
-      "firefox >= 110",
-      "safari >= 16",
-      "edge >= 110",
-      "ios >= 16",
-      "not dead",
-      "not op_mini all"
+      "chrome >= 111",
+      "firefox >= 111",
+      "safari >= 16.4",
+      "edge >= 111",
+      "ios >= 16.4"
     ],
     "development": [
       "last 1 chrome version",

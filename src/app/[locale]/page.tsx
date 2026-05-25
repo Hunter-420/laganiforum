@@ -5,7 +5,7 @@ import { MarketTicker } from "@/components/home/market-ticker";
 import { Container } from "@/components/layout/container";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import { getFeaturedPost } from "@/lib/posts";
-import { toAbsoluteImageUrl } from "@/lib/lcp-image";
+import { getLcpPreloadHref, toAbsoluteImageUrl } from "@/lib/lcp-image";
 import type { Metadata } from "next";
 
 const LatestPosts = dynamic(
@@ -68,7 +68,9 @@ export default async function Home({
 }) {
   const { locale } = await params;
   const featured = await getFeaturedPost(locale);
-  const lcpHref = featured?.meta.image ? toAbsoluteImageUrl(featured.meta.image) : null;
+  const lcpHref = featured?.meta.image
+    ? getLcpPreloadHref(featured.meta.image)
+    : null;
 
   if (lcpHref) {
     preload(lcpHref, { as: "image", fetchPriority: "high" });
@@ -76,9 +78,6 @@ export default async function Home({
 
   return (
     <>
-      {lcpHref && (
-        <link rel="preload" as="image" href={lcpHref} fetchPriority="high" />
-      )}
       <div className="flex flex-col w-full">
         <Container className="pt-6 sm:pt-8 pb-0">
           <section id="hero-featured" aria-label={locale === "np" ? "विशेष लेख" : "Featured article"}>
