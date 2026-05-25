@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    env:
+      MONGODB_URI: mongodb://localhost:27017/laganiforum-ci
+      AZURE_STORAGE_ACCOUNT_NAME: ci
+      AZURE_STORAGE_ACCOUNT_KEY: ci
+      AZURE_STORAGE_CONTAINER_NAME: ci
+      ADMIN_EMAIL: ci@laganiforum.com
+      ADMIN_PASSWORD: ci-password
+      JWT_SECRET: ci-jwt-secret
+      NEXT_PUBLIC_SITE_URL: https://laganiforum.com
+      NEXT_PUBLIC_APP_URL: https://laganiforum.com
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
