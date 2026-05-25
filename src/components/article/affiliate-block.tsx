@@ -39,7 +39,7 @@ export function AffiliateBlock({ affiliate, locale = "en" }: AffiliateBlockProps
               <div className="shrink-0 w-full sm:w-40 aspect-[4/3] rounded-xl overflow-hidden bg-muted border shadow-inner ring-1 ring-black/5">
                 <img
                   src={affiliate.image}
-                  alt={affiliate.title}
+                  alt={affiliate.description ? `${affiliate.title} — sponsor` : affiliate.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />

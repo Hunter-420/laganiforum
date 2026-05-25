@@ -196,7 +196,10 @@ export default async function ArticlePage({
               alt={meta.coverImageAlt || meta.title}
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 768px"
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
+              sizes="(max-width: 768px) 100vw, 768px"
               className="object-cover"
             />
           </figure>

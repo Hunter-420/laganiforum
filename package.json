@@ -46,7 +46,9 @@
       "firefox >= 110",
       "safari >= 16",
       "edge >= 110",
-      "not dead"
+      "ios >= 16",
+      "not dead",
+      "not op_mini all"
     ],
     "development": [
       "last 1 chrome version",

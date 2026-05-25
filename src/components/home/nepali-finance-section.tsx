@@ -64,8 +64,10 @@ export async function NepaliFinanceSection({ locale = "en" }: { locale?: string 
                         src={post.meta.image}
                         alt={post.meta.coverImageAlt || post.meta.title}
                         fill
+                        loading="lazy"
+                        decoding="async"
                         sizes="(max-width: 640px) 100vw, 128px"
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="object-cover"
                       />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-emerald-100 to-zinc-100 dark:from-zinc-800 dark:to-zinc-900" />
@@ -131,10 +133,10 @@ export async function NepaliFinanceSection({ locale = "en" }: { locale?: string 
                     <div className="text-right shrink-0">
                       <div className="font-semibold text-sm tabular-nums">{item.value}</div>
                       <div
-                        className={`text-xs font-medium ${
+                        className={`text-xs font-semibold ${
                           item.positive
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-red-600 dark:text-red-400"
+                            ? "text-emerald-900 dark:text-emerald-200"
+                            : "text-red-900 dark:text-red-200"
                         }`}
                       >
                         {item.change}
@@ -146,7 +148,7 @@ export async function NepaliFinanceSection({ locale = "en" }: { locale?: string 
               <div className="p-3 sm:p-4 border-t border-border">
                 <Link
                   href={`/${locale}/market`}
-                  className="text-sm font-medium text-primary hover:underline w-full text-center block"
+                  className="inline-flex min-h-11 items-center justify-center text-sm font-semibold text-emerald-800 hover:text-emerald-900 dark:text-emerald-300 w-full"
                 >
                   {isNp ? "पूर्ण बजार डाटा हेर्नुहोस्" : "View Full Market Data"}
                 </Link>

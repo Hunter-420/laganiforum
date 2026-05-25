@@ -23,14 +23,8 @@ export async function LatestPosts({ locale = "en" }: { locale?: string }) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        {posts.map((post, index) => (
-          <PostCard
-            key={post.meta.slug}
-            post={post}
-            locale={locale}
-            showTags
-            imagePriority={index === 0}
-          />
+        {posts.map((post) => (
+          <PostCard key={post.meta.slug} post={post} locale={locale} showTags />
         ))}
         {posts.length === 0 && (
           <div className="col-span-3 text-center py-12 text-muted-foreground border rounded-xl bg-muted/20">

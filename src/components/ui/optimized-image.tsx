@@ -26,15 +26,22 @@ export function OptimizedImage({
 }: OptimizedImageProps) {
   if (!src) return null;
 
+  const resolvedAlt = alt?.trim() || "Article illustration";
+  const defaultSizes = fill
+    ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    : "(max-width: 768px) 100vw, 768px";
+
   if (fill) {
     return (
       <Image
         src={src}
-        alt={alt}
+        alt={resolvedAlt}
         fill
         priority={priority}
-        fetchPriority={fetchPriority}
-        sizes={sizes ?? "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
+        fetchPriority={fetchPriority ?? (priority ? "high" : "auto")}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        sizes={sizes ?? defaultSizes}
         className={cn("object-cover", className)}
       />
     );
@@ -43,12 +50,14 @@ export function OptimizedImage({
   return (
     <Image
       src={src}
-      alt={alt}
+      alt={resolvedAlt}
       width={width}
       height={height}
       priority={priority}
-      fetchPriority={fetchPriority}
-      sizes={sizes}
+      fetchPriority={fetchPriority ?? (priority ? "high" : "auto")}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+      sizes={sizes ?? defaultSizes}
       className={className}
     />
   );

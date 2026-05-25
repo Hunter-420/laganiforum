@@ -81,10 +81,13 @@ export function Footer({ locale }: FooterProps) {
           <p className="font-medium text-foreground/80 mb-2">
             {isNp ? "विषयहरू" : "Topics"}
           </p>
-          <ul className="flex flex-wrap gap-x-3 gap-y-1 mb-4">
+          <ul className="flex flex-wrap gap-x-2 gap-y-2 mb-4">
             {TOPIC_CLUSTERS.map((topic) => (
               <li key={topic.slug}>
-                <Link href={`/${locale}/topics/${topic.slug}`} className="hover:text-primary">
+                <Link
+                  href={`/${locale}/topics/${topic.slug}`}
+                  className="inline-flex min-h-11 min-w-11 items-center px-2 py-2 text-sm font-semibold text-emerald-900 hover:text-emerald-950 dark:text-emerald-200 rounded-md"
+                >
                   {isNp ? topic.titleNp : topic.titleEn}
                 </Link>
               </li>
@@ -93,10 +96,13 @@ export function Footer({ locale }: FooterProps) {
           <p className="font-medium text-foreground/80 mb-2">
             {isNp ? "शेयर" : "Stocks"}
           </p>
-          <ul className="flex flex-wrap gap-x-3 gap-y-1">
+          <ul className="flex flex-wrap gap-x-2 gap-y-2">
             {STOCK_ENTITIES.map((stock) => (
               <li key={stock.slug}>
-                <Link href={`/${locale}/stocks/${stock.slug}`} className="font-medium text-emerald-800 hover:text-emerald-900 dark:text-emerald-300">
+                <Link
+                  href={`/${locale}/stocks/${stock.slug}`}
+                  className="inline-flex min-h-11 min-w-11 items-center px-2 py-2 text-sm font-semibold text-emerald-900 hover:text-emerald-950 dark:text-emerald-200 rounded-md"
+                >
                   {isNp ? stock.nameNp : stock.nameEn}
                 </Link>
               </li>

@@ -20,9 +20,10 @@ const geistMono = Geist_Mono({
 
 const mukta = Mukta({
   variable: "--font-mukta",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "700"],
   subsets: ["devanagari", "latin"],
   display: "swap",
+  preload: true,
 });
 
 export async function generateMetadata({

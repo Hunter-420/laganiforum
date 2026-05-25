@@ -19,10 +19,10 @@ export function MarketTicker({ locale = "en" }: { locale?: string }) {
             <span className="font-semibold text-xs sm:text-sm text-foreground">
               {locale === "np" && item.symbol === "GOLD (oz)" ? "सुन (oz)" : item.symbol}
             </span>
-            <span className="text-xs sm:text-sm font-medium tabular-nums">{item.price}</span>
+            <span className="text-xs sm:text-sm font-semibold tabular-nums text-foreground">{item.price}</span>
             <span
-              className={`flex items-center text-[10px] sm:text-xs font-medium tabular-nums ${
-                item.isUp ? "text-emerald-800 dark:text-emerald-200" : "text-red-800 dark:text-red-200"
+              className={`flex items-center text-[10px] sm:text-xs font-semibold tabular-nums ${
+                item.isUp ? "text-emerald-900 dark:text-emerald-200" : "text-red-900 dark:text-red-200"
               }`}
             >
               {item.isUp ? (
