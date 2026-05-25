@@ -5,7 +5,7 @@ import { TradingViewWidget } from "@/components/finance/trading-view-widget";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,

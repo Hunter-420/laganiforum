@@ -15,7 +15,7 @@ import { getSiteOrigin, getAuthorUrl } from "@/lib/site-url";
 import { DEFAULT_AUTHORS } from "@/lib/types/author";
 import type { Metadata } from "next";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export async function generateStaticParams() {
   let authors = DEFAULT_AUTHORS;
