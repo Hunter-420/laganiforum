@@ -26,7 +26,17 @@ export function AuthorsSettings({ authors, onChange }: AuthorsSettingsProps) {
     const id = `author-${Date.now()}`;
     onChange([
       ...authors,
-      { id, name: "", title: "Market Analyst", bio: "", photoUrl: "", facebookUrl: "" },
+      {
+        id,
+        name: "",
+        title: "Market Analyst",
+        bio: "",
+        photoUrl: "",
+        facebookUrl: "",
+        linkedinUrl: "",
+        twitterUrl: "",
+        email: "",
+      },
     ]);
   };
 
@@ -135,12 +145,37 @@ export function AuthorsSettings({ authors, onChange }: AuthorsSettingsProps) {
                   />
                 </div>
                 <div className="sm:col-span-2">
+                  <label className="text-xs font-medium text-muted-foreground">LinkedIn URL</label>
+                  <Input
+                    value={author.linkedinUrl || ""}
+                    onChange={(e) => updateAuthor(author.id, { linkedinUrl: e.target.value })}
+                    placeholder="https://linkedin.com/in/..."
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-xs font-medium text-muted-foreground">X (Twitter) URL</label>
+                  <Input
+                    value={author.twitterUrl || ""}
+                    onChange={(e) => updateAuthor(author.id, { twitterUrl: e.target.value })}
+                    placeholder="https://x.com/..."
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-xs font-medium text-muted-foreground">Email</label>
+                  <Input
+                    type="email"
+                    value={author.email || ""}
+                    onChange={(e) => updateAuthor(author.id, { email: e.target.value })}
+                    placeholder="name@example.com"
+                  />
+                </div>
+                <div className="sm:col-span-2">
                   <label className="text-xs font-medium text-muted-foreground">Short bio</label>
                   <textarea
                     className="w-full min-h-[60px] rounded-lg border bg-background px-3 py-2 text-sm"
                     value={author.bio || ""}
                     onChange={(e) => updateAuthor(author.id, { bio: e.target.value })}
-                    placeholder="Optional bio for author pages"
+                    placeholder="First paragraph shown on articles; add a blank line before a longer bio."
                   />
                 </div>
               </div>

@@ -20,6 +20,7 @@ export interface PostMeta {
   coverImageAlt?: string;
   readingTime?: string;
   affiliate?: import('./types/db').AffiliateBlock;
+  disclaimer?: string;
   views?: number;
   _id?: string;
 }

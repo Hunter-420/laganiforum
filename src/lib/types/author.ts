@@ -5,6 +5,9 @@ export interface AuthorProfile {
   bio?: string;
   photoUrl?: string;
   facebookUrl?: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  email?: string;
   isDefault?: boolean;
 }
 

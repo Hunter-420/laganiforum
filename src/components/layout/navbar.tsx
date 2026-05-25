@@ -19,6 +19,9 @@ const SearchDialog = dynamic(
   { ssr: false }
 );
 
+const navLinkClass =
+  "inline-flex min-h-10 items-center rounded-lg px-3 text-[15px] font-semibold text-foreground/85 hover:text-emerald-800 hover:bg-muted/70 dark:hover:text-emerald-300 transition-colors";
+
 export function Navbar({ locale }: { locale: string }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -35,28 +38,28 @@ export function Navbar({ locale }: { locale: string }) {
   const isNp = locale === "np";
 
   return (
-    <header className="w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+    <header className="sticky top-0 z-50 w-full border-b border-border/80 bg-background/90 shadow-sm backdrop-blur-md supports-[backdrop-filter]:bg-background/75">
       <Container>
-        <div className="flex h-14 md:h-16 items-center justify-between gap-4">
-          <div className="flex items-center gap-4 md:gap-6 min-w-0">
-            <Link href={`/${locale}`} className="flex items-center gap-2 shrink-0 min-h-11">
+        <div className="flex h-[3.75rem] md:h-16 items-center justify-between gap-4">
+          <div className="flex items-center gap-3 md:gap-5 min-w-0">
+            <Link
+              href={`/${locale}`}
+              className="flex items-center gap-2.5 shrink-0 min-h-11 rounded-lg pr-1 hover:opacity-90 transition-opacity"
+            >
               <Image
                 src="/logo.svg"
                 alt="Laganiforum home"
                 width={32}
                 height={32}
-                className="h-7 w-7 md:h-8 md:w-8"
+                className="h-8 w-8 md:h-9 md:w-9"
               />
-              <span className="font-bold text-lg tracking-tight text-emerald-800 dark:text-emerald-300 hidden sm:inline">
+              <span className="font-bold text-lg md:text-xl tracking-tight text-emerald-800 dark:text-emerald-300 hidden sm:inline">
                 Laganiforum
               </span>
             </Link>
 
-            <nav className="hidden md:flex items-center gap-5 text-base font-bold">
-              <Link
-                href={`/${locale}`}
-                className="inline-flex min-h-11 items-center text-foreground/90 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
-              >
+            <nav className="hidden md:flex items-center gap-0.5">
+              <Link href={`/${locale}`} className={navLinkClass}>
                 {isNp ? "गृहपृष्ठ" : "Home"}
               </Link>
 
@@ -65,20 +68,19 @@ export function Navbar({ locale }: { locale: string }) {
                 onMouseEnter={() => setCategoryDropdownOpen(true)}
                 onMouseLeave={() => setCategoryDropdownOpen(false)}
               >
-                <Link
-                  href={`/${locale}/blog`}
-                  className="inline-flex min-h-11 items-center gap-1 text-foreground/90 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors py-2"
-                >
+                <Link href={`/${locale}/blog`} className={`${navLinkClass} gap-1`}>
                   {isNp ? "बजार विश्लेषण" : "Analysis"}
-                  <ChevronDown className="w-3.5 h-3.5" />
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform ${categoryDropdownOpen ? "rotate-180" : ""}`}
+                  />
                 </Link>
                 {categoryDropdownOpen && (
-                  <div className="absolute top-full left-0 w-52 bg-background border rounded-lg shadow-lg py-1 z-50">
+                  <div className="absolute top-full left-0 mt-1 w-56 rounded-xl border border-border bg-background/95 py-1.5 shadow-lg backdrop-blur-sm z-50">
                     {categories.map((cat) => (
                       <Link
                         key={cat}
                         href={`/${locale}/blog?category=${encodeURIComponent(cat)}`}
-                        className="flex min-h-11 items-center px-4 text-sm text-foreground/90 hover:bg-muted hover:text-emerald-800 dark:hover:text-emerald-300"
+                        className="flex min-h-10 items-center px-4 text-sm font-medium text-foreground/90 hover:bg-muted hover:text-emerald-800 dark:hover:text-emerald-300"
                         onClick={() => setCategoryDropdownOpen(false)}
                       >
                         {cat}
@@ -88,37 +90,31 @@ export function Navbar({ locale }: { locale: string }) {
                 )}
               </div>
 
-              <Link
-                href={`/${locale}/market`}
-                className="inline-flex min-h-11 items-center text-foreground/90 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
-              >
+              <Link href={`/${locale}/market`} className={navLinkClass}>
                 {isNp ? "लाइभ बजार" : "Markets"}
               </Link>
               <a
                 href="https://app.laganiforum.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center text-foreground/90 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
+                className={navLinkClass}
               >
                 {isNp ? "ब्याकटेस्टिङ" : "Backtesting"}
               </a>
-              <Link
-                href={`/${locale}/about`}
-                className="inline-flex min-h-11 items-center text-foreground/90 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
-              >
+              <Link href={`/${locale}/about`} className={navLinkClass}>
                 {isNp ? "हाम्रो बारेमा" : "About"}
               </Link>
             </nav>
           </div>
 
-          <div className="flex items-center gap-1 sm:gap-2 min-h-11 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-1.5 min-h-11 shrink-0 rounded-xl border border-border/60 bg-muted/30 px-1 sm:px-1.5 py-1">
             <SearchDialog locale={locale} open={searchOpen} onOpenChange={setSearchOpen} />
             <ThemeToggle />
             <LocaleSwitcher locale={locale} />
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden min-h-11 min-w-11"
+              className="md:hidden min-h-10 min-w-10"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Menu"
             >
@@ -129,27 +125,27 @@ export function Navbar({ locale }: { locale: string }) {
       </Container>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t bg-background px-4 py-4 shadow-lg">
-          <nav className="flex flex-col gap-1 text-sm font-medium">
+        <div className="md:hidden border-t border-border bg-background/98 px-4 py-4 shadow-lg">
+          <nav className="flex flex-col gap-0.5 text-sm font-medium">
             <Link
               href={`/${locale}`}
-              className="min-h-11 flex items-center"
+              className="min-h-11 flex items-center rounded-lg px-3 hover:bg-muted"
               onClick={() => setMobileMenuOpen(false)}
             >
               {isNp ? "गृहपृष्ठ" : "Home"}
             </Link>
             <Link
               href={`/${locale}/blog`}
-              className="min-h-11 flex items-center"
+              className="min-h-11 flex items-center rounded-lg px-3 hover:bg-muted"
               onClick={() => setMobileMenuOpen(false)}
             >
               {isNp ? "बजार विश्लेषण" : "Analysis"}
             </Link>
-            <div className="pl-3 border-l flex flex-col gap-1">
+            <div className="ml-3 border-l border-border flex flex-col gap-0.5 pl-3">
               {categories.map((cat) => (
                 <Link
                   key={cat}
-                  className="min-h-11 flex items-center text-foreground/80 hover:text-emerald-800"
+                  className="min-h-10 flex items-center rounded-lg px-3 text-foreground/80 hover:bg-muted hover:text-emerald-800"
                   href={`/${locale}/blog?category=${encodeURIComponent(cat)}`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -159,21 +155,21 @@ export function Navbar({ locale }: { locale: string }) {
             </div>
             <Link
               href={`/${locale}/market`}
-              className="min-h-11 flex items-center"
+              className="min-h-11 flex items-center rounded-lg px-3 hover:bg-muted"
               onClick={() => setMobileMenuOpen(false)}
             >
               {isNp ? "लाइभ बजार" : "Markets"}
             </Link>
             <Link
               href={`/${locale}/about`}
-              className="min-h-11 flex items-center"
+              className="min-h-11 flex items-center rounded-lg px-3 hover:bg-muted"
               onClick={() => setMobileMenuOpen(false)}
             >
               {isNp ? "हाम्रो बारेमा" : "About"}
             </Link>
             <button
               type="button"
-              className="min-h-11 flex items-center text-left text-foreground/80"
+              className="min-h-11 flex items-center rounded-lg px-3 text-left text-foreground/80 hover:bg-muted"
               onClick={() => {
                 setMobileMenuOpen(false);
                 setSearchOpen(true);

@@ -19,7 +19,10 @@ export function RiskBanner({ locale }: RiskBannerProps) {
           <>
             <strong className="font-semibold">शैक्षिक सामग्री:</strong> यो लेख लगानी वा व्यापार सल्लाह होइन।
             निर्णय अघि आफैं अनुसन्धान गर्नुहोस्।{" "}
-            <Link href={`/${locale}/disclaimer`} className="text-primary font-medium hover:underline">
+            <Link
+              href={`/${locale}/disclaimer`}
+              className="font-semibold text-emerald-800 hover:underline dark:text-emerald-300"
+            >
               पूर्ण अस्वीकरण पढ्नुहोस्
             </Link>
             ।
@@ -28,7 +31,10 @@ export function RiskBanner({ locale }: RiskBannerProps) {
           <>
             <strong className="font-semibold">Educational content:</strong> This article is not investment or
             trading advice. Do your own research before acting.{" "}
-            <Link href={`/${locale}/disclaimer`} className="text-primary font-medium hover:underline">
+            <Link
+              href={`/${locale}/disclaimer`}
+              className="font-semibold text-emerald-800 hover:underline dark:text-emerald-300"
+            >
               Read full disclaimer
             </Link>
             .

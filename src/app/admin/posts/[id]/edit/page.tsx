@@ -42,6 +42,7 @@ export default async function EditPostPage({ params }: { params: Promise<{ id: s
     wordCount: post.wordCount,
     affiliate: post.affiliate,
     isFeatured: !!post.isFeatured,
+    disclaimer: post.disclaimer || "",
     draftKind: post.draftKind,
     id: id,
   };

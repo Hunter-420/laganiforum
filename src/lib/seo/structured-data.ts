@@ -44,7 +44,13 @@ export function buildPersonSchema(author: AuthorProfile, locale: string) {
     url: profileUrl,
     description: author.bio || undefined,
     ...(author.photoUrl ? { image: author.photoUrl } : {}),
-    ...(author.facebookUrl ? { sameAs: [author.facebookUrl] } : {}),
+    ...(author.email ? { email: author.email } : {}),
+    ...(() => {
+      const sameAs = [author.facebookUrl, author.linkedinUrl, author.twitterUrl].filter(
+        (url): url is string => Boolean(url?.trim())
+      );
+      return sameAs.length > 0 ? { sameAs } : {};
+    })(),
   };
 }
 

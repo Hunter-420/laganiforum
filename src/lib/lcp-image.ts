@@ -3,10 +3,10 @@ import { getSiteOrigin } from "@/lib/site-url";
 
 export const FEATURED_LCP_IMAGE = "/images/featured/nepse-backtesting.webp";
 
-export const FEATURED_LCP_SIZES = "(max-width: 768px) 100vw, 50vw";
+export const FEATURED_LCP_SIZES = "(max-width: 640px) 100vw, 378px";
 
-export const FEATURED_LCP_WIDTH = 1200;
-export const FEATURED_LCP_HEIGHT = 800;
+export const FEATURED_LCP_WIDTH = 800;
+export const FEATURED_LCP_HEIGHT = 534;
 
 export function isLocalAsset(src: string): boolean {
   return src.startsWith("/") && !src.startsWith("//");

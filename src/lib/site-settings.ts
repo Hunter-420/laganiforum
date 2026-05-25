@@ -27,6 +27,9 @@ function normalizeAuthor(raw: Partial<AuthorProfile>): AuthorProfile | null {
     bio: raw.bio ? String(raw.bio).trim() : undefined,
     photoUrl: raw.photoUrl ? String(raw.photoUrl).trim() : undefined,
     facebookUrl: raw.facebookUrl ? String(raw.facebookUrl).trim() : undefined,
+    linkedinUrl: raw.linkedinUrl ? String(raw.linkedinUrl).trim() : undefined,
+    twitterUrl: raw.twitterUrl ? String(raw.twitterUrl).trim() : undefined,
+    email: raw.email ? String(raw.email).trim() : undefined,
     isDefault: !!raw.isDefault,
   };
 }

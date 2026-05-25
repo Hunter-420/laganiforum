@@ -15,6 +15,9 @@ function serializeAuthors(authors: AuthorProfile[]): AuthorProfile[] {
     bio: a.bio ? String(a.bio) : "",
     photoUrl: a.photoUrl ? String(a.photoUrl) : "",
     facebookUrl: a.facebookUrl ? String(a.facebookUrl) : "",
+    linkedinUrl: a.linkedinUrl ? String(a.linkedinUrl) : "",
+    twitterUrl: a.twitterUrl ? String(a.twitterUrl) : "",
+    email: a.email ? String(a.email) : "",
     isDefault: !!a.isDefault,
   }));
 }

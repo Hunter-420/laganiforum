@@ -247,7 +247,7 @@ export default async function ArticlePage({
 
       {meta.affiliate && <AffiliateBlock affiliate={meta.affiliate} locale={locale} />}
 
-      <Disclaimer locale={locale} />
+      <Disclaimer locale={locale} customText={meta.disclaimer} />
 
       {meta.tags && meta.tags.length > 0 && (
         <footer className="mt-12 flex flex-wrap gap-2">

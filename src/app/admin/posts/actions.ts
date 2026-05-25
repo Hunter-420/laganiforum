@@ -23,6 +23,7 @@ export interface PostInput {
   wordCount: number;
   isFeatured?: boolean;
   affiliate?: AffiliateBlock;
+  disclaimer?: string;
 }
 
 async function applyFeaturedFlag(

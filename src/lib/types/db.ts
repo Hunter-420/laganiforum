@@ -29,6 +29,7 @@ export interface PostDocument {
   draftKind?: "standard" | "translation";
   views?: number;
   affiliate?: AffiliateBlock;
+  disclaimer?: string;
   translationGroupId?: string;
 }
 

@@ -16,14 +16,24 @@ export function ArticleContent({ source, locale }: ArticleContentProps) {
     const html = processContent(source);
     return (
       <div
-        className={locale === "np" ? "article-prose article-prose-np" : "article-prose"}
+        className={
+          locale === "np"
+            ? "article-prose article-prose-np text-base lg:text-lg font-normal leading-[1.8]"
+            : "article-prose text-base lg:text-lg font-normal leading-[1.8]"
+        }
         dangerouslySetInnerHTML={{ __html: html }}
       />
     );
   }
 
   return (
-    <div className={locale === "np" ? "article-prose article-prose-np" : "article-prose"}>
+    <div
+      className={
+        locale === "np"
+          ? "article-prose article-prose-np text-base lg:text-lg font-normal leading-[1.8]"
+          : "article-prose text-base lg:text-lg font-normal leading-[1.8]"
+      }
+    >
       <MDXRenderer source={source} />
     </div>
   );

@@ -1,7 +1,6 @@
 import { preload } from "react-dom";
 import dynamic from "next/dynamic";
 import { FeaturedArticle } from "@/components/home/featured-article";
-import { MarketTicker } from "@/components/home/market-ticker";
 import { Container } from "@/components/layout/container";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import { getFeaturedPost } from "@/lib/posts";
@@ -84,8 +83,6 @@ export default async function Home({
             <FeaturedArticle locale={locale} featured={featured} />
           </section>
         </Container>
-
-        <MarketTicker locale={locale} />
 
         <Container className="py-8 sm:py-12 space-y-12 sm:space-y-16 md:space-y-20">
           <LatestPosts locale={locale} />

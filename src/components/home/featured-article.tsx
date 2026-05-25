@@ -61,7 +61,7 @@ export async function FeaturedArticle({ locale = "en", featured }: FeaturedArtic
           </Link>
           <p className="text-foreground/80 mb-6 line-clamp-3 leading-relaxed">{meta.excerpt}</p>
           <div className="flex items-center gap-3 mt-auto">
-            <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center font-bold text-primary">
+            <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center font-bold text-emerald-800 dark:text-emerald-300">
               {meta.author.charAt(0)}
             </div>
             <div>

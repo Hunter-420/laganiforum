@@ -2,7 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/container";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
+import { AuthorSocialLinks } from "@/components/article/author-social-links";
 import { OptimizedImage } from "@/components/ui/optimized-image";
+import { getFirstParagraph } from "@/lib/author-text";
 import { HubPostGrid } from "@/components/seo/hub-post-grid";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildPageMetadata } from "@/lib/seo/metadata";
@@ -122,18 +124,11 @@ export default async function AuthorPage({
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{author.name}</h1>
           <p className="text-primary font-medium mt-1">{title}</p>
           {author.bio && (
-            <p className="mt-4 text-muted-foreground leading-relaxed max-w-2xl">{author.bio}</p>
+            <p className="mt-4 text-muted-foreground leading-relaxed max-w-2xl">
+              {getFirstParagraph(author.bio)}
+            </p>
           )}
-          {author.facebookUrl && (
-            <Link
-              href={author.facebookUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-3 text-sm text-primary hover:underline"
-            >
-              Facebook
-            </Link>
-          )}
+          <AuthorSocialLinks author={author} className="mt-4" />
         </div>
       </header>
 
