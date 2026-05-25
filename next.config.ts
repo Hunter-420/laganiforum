@@ -12,10 +12,10 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://s3.tradingview.com",
-      "style-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "img-src 'self' https: data: blob:",
-      "font-src 'self' data:",
-      "connect-src 'self' https:",
+      "font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com",
+      "connect-src 'self' https: data:",
       "frame-src 'self' https:",
       "object-src 'none'",
       "base-uri 'self'",

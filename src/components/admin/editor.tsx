@@ -58,6 +58,28 @@ function stripScriptsFromHtml(html: string): string {
   return html.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "");
 }
 
+const editorExtensions = [
+  StarterKit.configure({
+    heading: { levels: [2, 3] },
+    blockquote: {},
+    bulletList: {},
+    orderedList: {},
+    codeBlock: {},
+    horizontalRule: {},
+  }),
+  Underline,
+  TaskList,
+  TaskItem.configure({ nested: true }),
+  Table.configure({ resizable: true }),
+  TableRow,
+  TableHeader,
+  TableCell,
+  TextAlign.configure({ types: ["heading", "paragraph"] }),
+  Link.configure({ openOnClick: false, autolink: true }),
+  Image.configure({ inline: false, allowBase64: true }),
+  Placeholder.configure({ placeholder: "Write your article…" }),
+];
+
 export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const docInputRef = useRef<HTMLInputElement>(null);
@@ -65,27 +87,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
   const { prompt, toast } = useDialog();
 
   const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: { levels: [2, 3] },
-        blockquote: {},
-        bulletList: {},
-        orderedList: {},
-        codeBlock: {},
-        horizontalRule: {},
-      }),
-      Underline,
-      TaskList,
-      TaskItem.configure({ nested: true }),
-      Table.configure({ resizable: true }),
-      TableRow,
-      TableHeader,
-      TableCell,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Link.configure({ openOnClick: false, autolink: true }),
-      Image.configure({ inline: false, allowBase64: true }),
-      Placeholder.configure({ placeholder: "Write your article…" }),
-    ],
+    extensions: editorExtensions,
     content,
     immediatelyRender: false,
     editorProps: {
@@ -97,7 +99,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
           const file = event.dataTransfer.files[0];
           if (file.type.startsWith("image/")) {
             const pos = view.posAtCoords({ left: event.clientX, top: event.clientY })?.pos;
-            insertImageAsBase64(file, pos);
+            insertImageUpload(file, pos);
             return true;
           }
         }
@@ -107,7 +109,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
         if (event.clipboardData?.files?.[0]) {
           const file = event.clipboardData.files[0];
           if (file.type.startsWith("image/")) {
-            insertImageAsBase64(file);
+            insertImageUpload(file);
             return true;
           }
         }
@@ -125,37 +127,56 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
     }
   }, [content, editor]);
 
-  const insertImageAsBase64 = (file: File, pos?: number) => {
+  const insertImageUpload = (file: File, pos?: number) => {
     prompt({
       title: "Image alt text",
       description: "Describe the image for SEO and accessibility (required).",
       placeholder: "e.g. NEPSE daily chart showing breakout",
-      confirmLabel: "Insert image",
-      onSubmit: async (alt) => {
+      confirmLabel: "Next",
+      onSubmit: (alt) => {
         if (!alt.trim()) {
           toast("Image alt text is required for SEO", "error");
           return;
         }
-        const base64 = await fileToBase64(file);
-        if (pos !== undefined) {
-          editor
-            ?.chain()
-            .focus()
-            .insertContentAt(pos, {
-              type: "image",
-              attrs: { src: base64, alt: alt.trim() },
-            })
-            .run();
-        } else {
-          editor?.chain().focus().setImage({ src: base64, alt: alt.trim() }).run();
-        }
+        
+        prompt({
+          title: "Image caption (Optional)",
+          description: "Caption to display below the image.",
+          placeholder: "e.g. Source: TradingView",
+          confirmLabel: "Upload & Insert",
+          onSubmit: async (caption) => {
+            const formData = new FormData();
+            formData.append("file", file);
+            
+            try {
+              toast("Uploading image...", "default");
+              const res = await fetch("/api/upload/image", { method: "POST", body: formData });
+              if (!res.ok) throw new Error("Upload failed");
+              const data = await res.json();
+              const url = data.url;
+
+              const attrs = { src: url, alt: alt.trim(), title: caption.trim() || undefined };
+              
+              if (pos !== undefined) {
+                editor?.chain().focus().insertContentAt(pos, { type: "image", attrs }).run();
+              } else {
+                editor?.chain().focus().setImage(attrs).run();
+              }
+              
+              toast("Image inserted successfully", "success");
+            } catch (err) {
+              console.error(err);
+              toast("Failed to upload image", "error");
+            }
+          },
+        });
       },
     });
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
-      insertImageAsBase64(e.target.files[0]);
+      insertImageUpload(e.target.files[0]);
       e.target.value = "";
     }
   };
