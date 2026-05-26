@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { getFeaturedImageProps } from "@/lib/lcp-image";
 import { getFeaturedPost } from "@/lib/posts";
 import { getSiteSettings, resolveAuthor } from "@/lib/site-settings";
+import { formatDisplayDate } from "@/lib/seo/metadata";
 import type { Post } from "@/lib/posts";
 
 interface FeaturedArticleProps {
@@ -32,10 +33,17 @@ export async function FeaturedArticle({ locale = "en", featured }: FeaturedArtic
     title: isNp ? "बजार विश्लेषक" : "Market Analyst",
   };
 
+  const showUpdated = Boolean(
+    meta.updatedAt && meta.updatedAt.split("T")[0] !== meta.date.split("T")[0]
+  );
+  const displayDate = showUpdated ? meta.updatedAt : meta.date;
+  const datePrefix = showUpdated ? (isNp ? "अद्यावधिक: " : "Updated: ") : "";
+  const formattedDate = formatDisplayDate(displayDate!, locale);
+
   return (
     <div className="group relative overflow-hidden rounded-2xl bg-card border shadow-sm">
       <div className="grid md:grid-cols-2 gap-0">
-        <div className="relative h-52 sm:h-64 md:h-full min-h-[220px] md:min-h-[300px] w-full bg-muted overflow-hidden">
+        <Link href={`/${locale}/blog/${meta.slug}`} className="block relative h-52 sm:h-64 md:h-full min-h-[220px] md:min-h-[300px] w-full bg-muted overflow-hidden">
           {meta.image ? (
             <Image
               src={meta.image}
@@ -47,19 +55,21 @@ export async function FeaturedArticle({ locale = "en", featured }: FeaturedArtic
               decoding="async"
               unoptimized={imageProps?.unoptimized}
               sizes={imageProps?.sizes}
-              className="object-cover"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-tr from-emerald-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-600" />
           )}
-          <div className="absolute inset-0 bg-black/20 pointer-events-none" />
-        </div>
+          <div className="absolute inset-0 bg-black/20 pointer-events-none transition-opacity group-hover:opacity-0" />
+        </Link>
         <div className="flex flex-col justify-center p-8 lg:p-12">
           <div className="flex items-center gap-2 mb-4">
             <Badge className="bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200">
               {meta.category}
             </Badge>
-            <span className="text-xs text-foreground/70 font-medium">{meta.date}</span>
+            <span className="text-xs text-foreground/70 font-medium" title={meta.date}>
+              {datePrefix}{formattedDate}
+            </span>
           </div>
           <Link href={`/${locale}/blog/${meta.slug}`}>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mb-3 sm:mb-4 group-hover:text-primary transition-colors line-clamp-3">

@@ -481,12 +481,56 @@ export function PostForm({
 
             <div>
               <label className={labelClass}>Tags</label>
+              <div className="flex flex-wrap gap-2 mb-2">
+                {tags.split(",").map((x) => x.trim()).filter(Boolean).map((t) => (
+                  <span key={t} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 text-sm font-medium">
+                    {t}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current = tags.split(",").map((x) => x.trim()).filter(Boolean);
+                        setTags(current.filter((tag) => tag !== t).join(", "));
+                      }}
+                      className="text-emerald-600 hover:text-emerald-900 dark:text-emerald-400 dark:hover:text-emerald-200"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </button>
+                  </span>
+                ))}
+              </div>
               <input
                 type="text"
-                value={tags}
-                onChange={(e) => setTags(e.target.value)}
-                placeholder="Comma separated"
+                placeholder="Type a tag and press Enter or comma"
                 className={inputClass}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === ",") {
+                    e.preventDefault();
+                    const val = e.currentTarget.value.trim();
+                    if (val) {
+                      const current = tags.split(",").map((x) => x.trim()).filter(Boolean);
+                      if (!current.includes(val)) {
+                        setTags([...current, val].join(", "));
+                      }
+                      e.currentTarget.value = "";
+                    }
+                  } else if (e.key === "Backspace" && !e.currentTarget.value) {
+                    e.preventDefault();
+                    const current = tags.split(",").map((x) => x.trim()).filter(Boolean);
+                    if (current.length > 0) {
+                      setTags(current.slice(0, -1).join(", "));
+                    }
+                  }
+                }}
+                onBlur={(e) => {
+                  const val = e.target.value.trim();
+                  if (val) {
+                    const current = tags.split(",").map((x) => x.trim()).filter(Boolean);
+                    if (!current.includes(val)) {
+                      setTags([...current, val].join(", "));
+                    }
+                    e.target.value = "";
+                  }
+                }}
               />
               {tagSuggestions.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mt-2">

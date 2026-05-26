@@ -1,29 +1,14 @@
-import { preload } from "react-dom";
-import dynamic from "next/dynamic";
+
 import { FeaturedArticle } from "@/components/home/featured-article";
 import { Container } from "@/components/layout/container";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import { getFeaturedPost } from "@/lib/posts";
-import { getLcpPreloadHref, toAbsoluteImageUrl } from "@/lib/lcp-image";
+import { toAbsoluteImageUrl } from "@/lib/lcp-image";
 import type { Metadata } from "next";
 
-const LatestPosts = dynamic(
-  () => import("@/components/home/latest-posts").then((m) => ({ default: m.LatestPosts })),
-  { loading: () => <div className="h-96 rounded-xl bg-muted/30 animate-pulse" aria-hidden /> }
-);
-
-const NepaliFinanceSection = dynamic(
-  () =>
-    import("@/components/home/nepali-finance-section").then((m) => ({
-      default: m.NepaliFinanceSection,
-    })),
-  { loading: () => <div className="h-80 rounded-xl bg-muted/30 animate-pulse" aria-hidden /> }
-);
-
-const Newsletter = dynamic(
-  () => import("@/components/home/newsletter").then((m) => ({ default: m.Newsletter })),
-  { loading: () => <div className="h-64 rounded-2xl bg-muted/30 animate-pulse" aria-hidden /> }
-);
+import { LatestPosts } from "@/components/home/latest-posts";
+import { NepaliFinanceSection } from "@/components/home/nepali-finance-section";
+import { Newsletter } from "@/components/home/newsletter";
 
 export const revalidate = 300;
 
@@ -67,13 +52,7 @@ export default async function Home({
 }) {
   const { locale } = await params;
   const featured = await getFeaturedPost(locale);
-  const lcpHref = featured?.meta.image
-    ? getLcpPreloadHref(featured.meta.image)
-    : null;
 
-  if (lcpHref) {
-    preload(lcpHref, { as: "image", fetchPriority: "high" });
-  }
 
   return (
     <>

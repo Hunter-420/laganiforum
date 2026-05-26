@@ -26,9 +26,9 @@ import {
 } from "@/lib/seo/structured-data";
 import { TOPIC_CLUSTERS, getTopicBySlug } from "@/lib/seo/topics";
 import { blogCategoryUrl, blogTagUrl } from "@/lib/tag-url";
-import { preload } from "react-dom";
+
 import type { Metadata } from "next";
-import { getFeaturedImageProps, getLcpPreloadHref } from "@/lib/lcp-image";
+import { getFeaturedImageProps } from "@/lib/lcp-image";
 import type { AuthorProfile } from "@/lib/types/author";
 
 
@@ -136,11 +136,7 @@ export default async function ArticlePage({
     ) || (meta.tags?.[0] ? getTopicBySlug(meta.tags[0].toLowerCase().replace(/\s+/g, "-")) : undefined);
 
   const imageProps = meta.image ? getFeaturedImageProps(meta.image) : null;
-  const lcpHref = meta.image ? getLcpPreloadHref(meta.image) : null;
 
-  if (lcpHref) {
-    preload(lcpHref, { as: "image", fetchPriority: "high" });
-  }
 
   return (
     <>
@@ -233,7 +229,7 @@ export default async function ArticlePage({
         </div>
       </header>
 
-      <RiskBanner locale={locale} />
+      <RiskBanner locale={locale} customText={meta.disclaimer} />
 
       <section id="article-content" className="max-w-none">
         <ArticleContent source={content} locale={locale} />
