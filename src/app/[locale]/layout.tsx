@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Mukta } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { DialogProvider } from "@/components/ui/dialog";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -18,14 +18,7 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const mukta = Mukta({
-  variable: "--font-mukta",
-  weight: ["400", "500", "600", "700"],
-  subsets: ["devanagari", "latin"],
-  display: "swap",
-  preload: true,
-  adjustFontFallback: false,
-});
+
 
 export async function generateMetadata({
   params,
@@ -73,7 +66,7 @@ export default async function LocaleLayout({
   return (
     <div
       lang={isNp ? "ne" : locale}
-      className={`${geistSans.variable} ${geistMono.variable} ${mukta.variable} min-h-dvh flex flex-col ${isNp ? "np-locale font-mukta" : "font-sans"}`}
+      className={`${geistSans.variable} ${geistMono.variable} min-h-dvh flex flex-col ${isNp ? "np-locale font-mukta" : "font-sans"}`}
     >
       <SiteJsonLd locale={locale} />
       <DialogProvider>

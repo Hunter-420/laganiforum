@@ -47,15 +47,12 @@ export function Navbar({ locale }: { locale: string }) {
               className="flex items-center gap-2.5 shrink-0 min-h-11 rounded-lg pr-1 hover:opacity-90 transition-opacity"
             >
               <Image
-                src="/logo.svg"
+                src="/logo.png"
                 alt="Laganiforum home"
                 width={32}
                 height={32}
                 className="h-8 w-8 md:h-9 md:w-9"
               />
-              <span className="font-bold text-lg md:text-xl tracking-tight text-emerald-800 dark:text-emerald-300 hidden sm:inline">
-                Laganiforum
-              </span>
             </Link>
 
             <nav className="hidden md:flex items-center gap-0.5">
