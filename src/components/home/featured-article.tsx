@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { getFeaturedImageProps } from "@/lib/lcp-image";
 import { getFeaturedPost } from "@/lib/posts";
+import { getSiteSettings, resolveAuthor } from "@/lib/site-settings";
 import type { Post } from "@/lib/posts";
 
 interface FeaturedArticleProps {
@@ -24,6 +25,12 @@ export async function FeaturedArticle({ locale = "en", featured }: FeaturedArtic
 
   const { meta } = featuredPost;
   const imageProps = meta.image ? getFeaturedImageProps(meta.image) : null;
+  const settings = await getSiteSettings();
+  const authorProfile = resolveAuthor(settings.authors, meta.author) ?? {
+    id: "unknown",
+    name: meta.author,
+    title: isNp ? "बजार विश्लेषक" : "Market Analyst",
+  };
 
   return (
     <div className="group relative overflow-hidden rounded-2xl bg-card border shadow-sm">
@@ -61,13 +68,23 @@ export async function FeaturedArticle({ locale = "en", featured }: FeaturedArtic
           </Link>
           <p className="text-foreground/80 mb-6 line-clamp-3 leading-relaxed">{meta.excerpt}</p>
           <div className="flex items-center gap-3 mt-auto">
-            <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center font-bold text-emerald-800 dark:text-emerald-300">
-              {meta.author.charAt(0)}
-            </div>
+            {authorProfile.photoUrl ? (
+              <Image
+                src={authorProfile.photoUrl}
+                alt={authorProfile.name}
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full object-cover bg-muted"
+              />
+            ) : (
+              <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center font-bold text-emerald-800 dark:text-emerald-300">
+                {authorProfile.name.charAt(0)}
+              </div>
+            )}
             <div>
-              <p className="text-sm font-semibold">{meta.author}</p>
+              <p className="text-sm font-semibold">{authorProfile.name}</p>
               <p className="text-xs text-foreground/70">
-                {isNp ? "बजार विश्लेषक" : "Market Analyst"}
+                {authorProfile.title}
               </p>
             </div>
           </div>

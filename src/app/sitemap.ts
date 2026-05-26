@@ -1,6 +1,8 @@
 import { MetadataRoute } from "next";
 import { collectAllSitemapUrls } from "@/lib/seo/sitemap-urls";
 
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries = await collectAllSitemapUrls();
   return entries.map((e) => ({

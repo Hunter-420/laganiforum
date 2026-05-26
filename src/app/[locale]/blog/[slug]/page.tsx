@@ -31,7 +31,6 @@ import type { Metadata } from "next";
 import { getFeaturedImageProps, getLcpPreloadHref } from "@/lib/lcp-image";
 import type { AuthorProfile } from "@/lib/types/author";
 
-export const revalidate = 300;
 
 export async function generateStaticParams() {
   const [enSlugs, npSlugs] = await Promise.all([

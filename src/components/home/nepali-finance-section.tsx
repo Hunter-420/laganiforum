@@ -66,7 +66,7 @@ export async function NepaliFinanceSection({ locale = "en" }: { locale?: string 
                         fill
                         loading="lazy"
                         decoding="async"
-                        sizes="(max-width: 640px) 100vw, 128px"
+                        sizes="(max-width: 640px) 100vw, 160px"
                         className="object-cover"
                       />
                     ) : (
