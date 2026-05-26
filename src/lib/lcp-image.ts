@@ -1,4 +1,3 @@
-import { getImageProps } from "next/image";
 import { getSiteOrigin } from "@/lib/site-url";
 
 export const FEATURED_LCP_IMAGE = "/images/featured/nepse-backtesting.webp";
@@ -19,39 +18,6 @@ export function toAbsoluteImageUrl(src: string): string {
   return src.startsWith("/") ? `${origin}${src}` : `${origin}/${src}`;
 }
 
-/** Preload href must match what next/image will request (or the static file when unoptimized). */
-export function getLcpPreloadHref(
-  src: string,
-  options: {
-    width?: number;
-    height?: number;
-    sizes?: string;
-    unoptimized?: boolean;
-  } = {}
-): string {
-  const {
-    width = FEATURED_LCP_WIDTH,
-    height = FEATURED_LCP_HEIGHT,
-    sizes = FEATURED_LCP_SIZES,
-    unoptimized = isLocalAsset(src),
-  } = options;
-
-  if (unoptimized) {
-    return toAbsoluteImageUrl(src);
-  }
-
-  const { props } = getImageProps({
-    alt: "",
-    src,
-    width,
-    height,
-    sizes,
-    quality: 75,
-    priority: true,
-  });
-
-  return props.src;
-}
 
 export function getFeaturedImageProps(src: string) {
   return {

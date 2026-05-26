@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { blogCategoryUrl, blogTagUrl } from "@/lib/tag-url";
+import { formatDisplayDate } from "@/lib/seo/metadata";
 import type { Post } from "@/lib/posts";
 
 interface PostCardProps {
@@ -23,6 +24,13 @@ export function PostCard({
   const isNp = locale === "np";
   const { meta } = post;
   const postHref = `/${locale}/blog/${meta.slug}`;
+
+  const showUpdated = Boolean(
+    meta.updatedAt && meta.updatedAt.split("T")[0] !== meta.date.split("T")[0]
+  );
+  const displayDate = showUpdated ? meta.updatedAt : meta.date;
+  const datePrefix = showUpdated ? (isNp ? "अद्यावधिक: " : "Updated: ") : "";
+  const formattedDate = formatDisplayDate(displayDate!, locale);
 
   return (
     <Card className="h-full flex flex-col overflow-hidden transition-all hover:border-primary/50 hover:shadow-md">
@@ -54,7 +62,9 @@ export function PostCard({
               {meta.category}
             </Badge>
           </Link>
-          <span className="text-xs text-muted-foreground shrink-0">{meta.date}</span>
+          <span className="text-xs text-muted-foreground shrink-0" title={meta.date}>
+            {datePrefix}{formattedDate}
+          </span>
         </div>
 
         <Link href={postHref} className="block group/title">
