@@ -1,7 +1,17 @@
-import type { Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { themeBlockingScript } from "@/lib/theme-script";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  icons: {
+    icon: [
+      { url: "/fabicon.png", type: "image/png" },
+    ],
+    shortcut: "/fabicon.png",
+    apple: "/fabicon.png",
+  },
+};
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -17,7 +27,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/fabicon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />

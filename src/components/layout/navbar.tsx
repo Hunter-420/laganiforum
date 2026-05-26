@@ -49,9 +49,10 @@ export function Navbar({ locale }: { locale: string }) {
               <Image
                 src="/logo.png"
                 alt="Laganiforum home"
-                width={32}
-                height={32}
-                className="h-8 w-8 md:h-9 md:w-9"
+                width={160}
+                height={46}
+                priority
+                className="h-9 md:h-11 w-auto"
               />
             </Link>
 
