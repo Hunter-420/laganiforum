@@ -87,6 +87,14 @@ export async function Footer({ locale }: FooterProps) {
                   {disclaimerLabel}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href={`/${locale}/author`}
+                  className="font-semibold text-emerald-800 hover:text-emerald-900 dark:text-emerald-300 transition-colors"
+                >
+                  {isNp ? "हाम्रा लेखकहरू" : "Authors"}
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

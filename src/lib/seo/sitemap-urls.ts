@@ -6,7 +6,7 @@ import { getSiteSettings } from "@/lib/site-settings";
 
 const LOCALES = ["en", "np"] as const;
 const TRUST_ROUTES = ["/about", "/contact", "/disclaimer"];
-const STATIC_ROUTES = ["", "/blog", "/market"];
+const STATIC_ROUTES = ["", "/blog", "/market", "/author"];
 
 export interface SitemapEntry {
   url: string;
@@ -147,18 +147,26 @@ export async function collectAllSitemapUrls(): Promise<SitemapEntry[]> {
 
 export function entriesToXml(entries: SitemapEntry[]): string {
   const urls = entries
-    .map(
-      (e) => `  <url>
+    .map((e) => {
+      const segment = e.url.replace(/https:\/\/laganiforum\.com\/(en|np)/, "");
+      const enUrl = `https://laganiforum.com/en${segment}`;
+      const npUrl = `https://laganiforum.com/np${segment}`;
+      
+      return `  <url>
     <loc>${e.url}</loc>
     <lastmod>${e.lastModified.toISOString()}</lastmod>
     <changefreq>${e.changeFrequency}</changefreq>
     <priority>${e.priority}</priority>
-  </url>`
-    )
+    <xhtml:link rel="alternate" hreflang="en" href="${enUrl}"/>
+    <xhtml:link rel="alternate" hreflang="ne" href="${npUrl}"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl}"/>
+  </url>`;
+    })
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls}
 </urlset>`;
 }

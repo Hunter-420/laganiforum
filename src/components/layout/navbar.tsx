@@ -99,6 +99,9 @@ export function Navbar({ locale }: { locale: string }) {
               >
                 {isNp ? "ब्याकटेस्टिङ" : "Backtesting"}
               </a>
+              <Link href={`/${locale}/topics/nepse`} className={navLinkClass}>
+                {isNp ? "नेप्से" : "NEPSE"}
+              </Link>
               <Link href={`/${locale}/about`} className={navLinkClass}>
                 {isNp ? "हाम्रो बारेमा" : "About"}
               </Link>
@@ -157,6 +160,13 @@ export function Navbar({ locale }: { locale: string }) {
               onClick={() => setMobileMenuOpen(false)}
             >
               {isNp ? "लाइभ बजार" : "Markets"}
+            </Link>
+            <Link
+              href={`/${locale}/topics/nepse`}
+              className="min-h-11 flex items-center rounded-lg px-3 hover:bg-muted"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {isNp ? "नेप्से" : "NEPSE"}
             </Link>
             <Link
               href={`/${locale}/about`}

@@ -96,10 +96,10 @@ export async function NepaliFinanceSection({ locale = "en" }: { locale?: string 
 
           {displayPosts.length > 0 && (
             <Link
-              href={`/${locale}/blog?tag=${tagQuery}`}
+              href={`/${locale}/topics/nepse`}
               className="inline-flex items-center mt-5 sm:mt-6 text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
             >
-              {isNp ? "नेपाल बजारबाट थप पढ्नुहोस्" : "Read more from Nepal Markets"}{" "}
+              {isNp ? "नेप्से बारे थप पढ्नुहोस्" : "Read more about NEPSE"}{" "}
               <ArrowRight className="w-4 h-4 ml-1 shrink-0" />
             </Link>
           )}

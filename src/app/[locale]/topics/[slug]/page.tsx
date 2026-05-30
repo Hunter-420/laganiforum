@@ -30,15 +30,24 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, slug } = await params;
   const topic = getTopicBySlug(slug);
-  if (!topic) return {};
+  if (!topic) return { robots: { index: false, follow: false } };
+
+  const allPosts = await getAllPublishedPosts(locale);
+  const posts = filterPostsByTopic(allPosts, topic);
 
   const isNp = locale === "np";
-  return buildPageMetadata({
+  const base = buildPageMetadata({
     locale,
     title: isNp ? topic.titleNp : topic.titleEn,
     description: isNp ? topic.descriptionNp : topic.descriptionEn,
     path: `/topics/${slug}`,
   });
+
+  if (posts.length === 0) {
+    return { ...base, robots: { index: false, follow: true } };
+  }
+
+  return base;
 }
 
 export default async function TopicPage({
@@ -74,10 +83,26 @@ export default async function TopicPage({
     }))
   );
 
+  const faqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: isNp ? `${title} भनेको के हो?` : `What is ${title}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: description,
+        },
+      },
+    ],
+  };
+
   return (
     <Container className="py-8 md:py-12">
       <JsonLd data={breadcrumbLd} />
       <JsonLd data={itemListLd} />
+      <JsonLd data={faqLd} />
 
       <Breadcrumbs
         className="mb-6"
@@ -90,7 +115,31 @@ export default async function TopicPage({
 
       <header className="mb-10">
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">{title}</h1>
-        <p className="text-lg text-muted-foreground max-w-2xl">{description}</p>
+        <div className="prose-spacing text-lg text-muted-foreground max-w-2xl leading-relaxed">
+          {isNp ? (
+            <>
+              <p>
+                {description}
+              </p>
+              <p>
+                यस विषय खण्डमा, तपाईंले बजारको गहिरो विश्लेषण, शैक्षिक स्रोतहरू, र 
+                व्यापार रणनीतिहरू फेला पार्न सक्नुहुन्छ। यी लेखहरूले तपाईंलाई बजारको 
+                प्रवृत्तिहरू बुझ्न र सूचित वित्तीय निर्णयहरू गर्न मद्दत गर्ने लक्ष्य राख्दछन्।
+              </p>
+            </>
+          ) : (
+            <>
+              <p>
+                {description}
+              </p>
+              <p>
+                In this topic section, you can find in-depth market analysis, educational 
+                resources, and trading strategies. These articles aim to help you understand 
+                market trends and make informed financial decisions.
+              </p>
+            </>
+          )}
+        </div>
       </header>
 
       <section aria-labelledby="topic-posts-heading">

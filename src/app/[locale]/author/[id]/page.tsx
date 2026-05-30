@@ -44,10 +44,15 @@ export async function generateMetadata({
   const { locale, id } = await params;
   const settings = await getSiteSettings();
   const author = getAuthorById(settings.authors, id);
-  if (!author) return {};
+  if (!author) return { robots: { index: false, follow: false } };
+
+  const allPosts = await getAllPublishedPosts(locale);
+  const authorPosts = allPosts.filter(
+    (p) => p.meta.author.trim().toLowerCase() === author.name.trim().toLowerCase()
+  );
 
   const isNp = locale === "np";
-  return buildPageMetadata({
+  const base = buildPageMetadata({
     locale,
     title: isNp ? `${author.name} — लेखक` : `${author.name} — Author`,
     description:
@@ -58,6 +63,12 @@ export async function generateMetadata({
     path: `/author/${id}`,
     ogImage: author.photoUrl,
   });
+
+  if (authorPosts.length === 0) {
+    return { ...base, robots: { index: false, follow: true } };
+  }
+
+  return base;
 }
 
 export default async function AuthorPage({

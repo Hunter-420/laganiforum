@@ -1,9 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { themeBlockingScript } from "@/lib/theme-script";
+import { getSiteOrigin } from "@/lib/site-url";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  // metadataBase must live in the ROOT layout so every page — regardless of
+  // which layout subtree renders — resolves relative canonical/OG URLs to the
+  // correct absolute origin. Without this, Next.js falls back to localhost in
+  // production edge-cases, producing broken <link rel="canonical"> tags.
+  metadataBase: new URL(getSiteOrigin()),
   icons: {
     icon: [
       { url: "/fabicon.png", type: "image/png" },

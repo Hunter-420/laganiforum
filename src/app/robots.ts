@@ -11,10 +11,12 @@ export default function robots(): MetadataRoute.Robots {
       disallow: ["/api/", "/admin/", "/login"],
     },
     sitemap: [
+      `${origin}/sitemap-index.xml`,
       `${origin}/sitemap.xml`,
       `${origin}/news-sitemap.xml`,
       `${origin}/category-sitemap.xml`,
       `${origin}/stocks-sitemap.xml`,
+      `${origin}/author-sitemap.xml`,
     ],
   };
 }
