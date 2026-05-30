@@ -55,6 +55,44 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
+  async redirects() {
+    return [
+      // www → non-www (permanent 301).
+      // Without this, www.laganiforum.com serves real pages whose canonical
+      // points to non-www. Google correctly labels those as "Alternate page
+      // with proper canonical tag" — they should redirect instead.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.laganiforum.com" }],
+        destination: "https://laganiforum.com/:path*",
+        permanent: true,
+      },
+      // http → https belt-and-suspenders redirect (Vercel handles this at edge
+      // but explicit redirect ensures no http variant leaks into GSC).
+      {
+        source: "/:path*",
+        has: [{ type: "header", key: "x-forwarded-proto", value: "http" }],
+        destination: "https://laganiforum.com/:path*",
+        permanent: true,
+      },
+      // Old URL redirects
+      {
+        source: "/category/:slug*",
+        destination: "/en/blog?category=:slug*",
+        permanent: true,
+      },
+      {
+        source: "/tag/:slug*",
+        destination: "/en/blog?tag=:slug*",
+        permanent: true,
+      },
+      {
+        source: "/author/:id",
+        destination: "/en/author/:id",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

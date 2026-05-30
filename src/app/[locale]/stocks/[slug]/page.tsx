@@ -30,11 +30,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, slug } = await params;
   const stock = getStockBySlug(slug);
-  if (!stock) return {};
+  if (!stock) return { robots: { index: false, follow: false } };
 
+  const allPosts = await getAllPublishedPosts(locale);
+  const posts = filterPostsByStock(allPosts, stock);
+  
   const isNp = locale === "np";
   const name = isNp ? stock.nameNp : stock.nameEn;
-  return buildPageMetadata({
+  const base = buildPageMetadata({
     locale,
     title: `${name} (${stock.symbol})`,
     description: isNp
@@ -42,6 +45,12 @@ export async function generateMetadata({
       : `NEPSE analysis, news, and educational content about ${stock.nameEn} (${stock.symbol}).`,
     path: `/stocks/${slug}`,
   });
+
+  if (posts.length === 0) {
+    return { ...base, robots: { index: false, follow: true } };
+  }
+
+  return base;
 }
 
 export default async function StockPage({
@@ -77,10 +86,34 @@ export default async function StockPage({
     }))
   );
 
+  const faqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: isNp ? `${name} को प्रतीक के हो?` : `What is the symbol for ${name}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: stock.symbol,
+        },
+      },
+      {
+        "@type": "Question",
+        name: isNp ? `${name} कुन क्षेत्र अन्तर्गत पर्दछ?` : `Which sector does ${name} belong to?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: sector,
+        },
+      },
+    ],
+  };
+
   return (
     <Container className="py-8 md:py-12">
       <JsonLd data={breadcrumbLd} />
       <JsonLd data={itemListLd} />
+      <JsonLd data={faqLd} />
 
       <Breadcrumbs
         className="mb-6"
@@ -97,11 +130,33 @@ export default async function StockPage({
           <span className="text-muted-foreground font-semibold">({stock.symbol})</span>
         </h1>
         <p className="text-sm text-primary font-medium mb-3">{sector}</p>
-        <p className="text-lg text-muted-foreground max-w-2xl">
-          {isNp
-            ? `${name} सम्बन्धी शैक्षिक विश्लेषण र बजार सामग्री। यो लगानी सिफारिस होइन।`
-            : `Educational analysis and market content related to ${stock.nameEn}. Not investment advice.`}
-        </p>
+        <div className="prose-spacing text-lg text-muted-foreground max-w-2xl leading-relaxed">
+          {isNp ? (
+            <>
+              <p>
+                {name} सम्बन्धी शैक्षिक विश्लेषण र बजार सामग्री। यो पृष्ठमा तपाईंले 
+                यस कम्पनीसँग सम्बन्धित प्राविधिक विश्लेषण, वित्तीय रिपोर्टहरू, र बजार अद्यावधिकहरू 
+                पाउन सक्नुहुन्छ।
+              </p>
+              <p>
+                <strong>अस्वीकरण:</strong> यहाँ प्रस्तुत गरिएका सामग्रीहरू केवल शैक्षिक 
+                प्रयोजनका लागि हुन् र यसलाई लगानी सिफारिसको रूपमा लिनु हुँदैन।
+              </p>
+            </>
+          ) : (
+            <>
+              <p>
+                Educational analysis and market content related to {stock.nameEn}. On this page, 
+                you can find technical analysis, financial reports, and market updates concerning 
+                this company.
+              </p>
+              <p>
+                <strong>Disclaimer:</strong> The content provided here is for educational 
+                purposes only and should not be considered as investment advice.
+              </p>
+            </>
+          )}
+        </div>
       </header>
 
       <section aria-labelledby="stock-posts-heading">

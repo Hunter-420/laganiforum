@@ -84,8 +84,9 @@ export async function generateMetadata({
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        "en-US": `/en/blog/${slug}`,
-        "ne-NP": `/np/blog/${slug}`,
+        "en": `${getSiteOrigin()}/en/blog/${slug}`,
+        "ne": `${getSiteOrigin()}/np/blog/${slug}`,
+        "x-default": `${getSiteOrigin()}/en/blog/${slug}`,
       },
     },
   };
