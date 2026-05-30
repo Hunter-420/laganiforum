@@ -57,17 +57,6 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // www → non-www (permanent 301).
-      // Without this, www.laganiforum.com serves real pages whose canonical
-      // points to non-www. Google correctly labels those as "Alternate page
-      // with proper canonical tag" — they should redirect instead.
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "www.laganiforum.com" }],
-        destination: "https://laganiforum.com/:path*",
-        permanent: true,
-      },
-
       // Old URL redirects
       {
         source: "/category/:slug*",
