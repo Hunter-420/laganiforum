@@ -67,14 +67,7 @@ const nextConfig: NextConfig = {
         destination: "https://laganiforum.com/:path*",
         permanent: true,
       },
-      // http → https belt-and-suspenders redirect (Vercel handles this at edge
-      // but explicit redirect ensures no http variant leaks into GSC).
-      {
-        source: "/:path*",
-        has: [{ type: "header", key: "x-forwarded-proto", value: "http" }],
-        destination: "https://laganiforum.com/:path*",
-        permanent: true,
-      },
+
       // Old URL redirects
       {
         source: "/category/:slug*",
